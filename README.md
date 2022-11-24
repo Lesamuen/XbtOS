@@ -20,8 +20,11 @@ The only dependency is SDL2, so depending on whether you are building for Linux 
 
 Currently using SDL 2.26.0; the project might work with previous versions, but get this version or up in case it doesn't.
 
+Otherwise, use provided Makefile to compile.
+
 ### Linux
 `sudo apt-get install libsdl2-dev`
 
-### Windows
-If in doubt, get the devel-mingw zip from [their github](https://github.com/libsdl-org/SDL/releases/tag/release-2.26.0). However, the header files and the binary files are already included in the repository.
+### Windows (MinGW)
+Get the devel-mingw zip from [their github](https://github.com/libsdl-org/SDL/releases/tag/release-2.26.0).
+Place include and lib folders in repo, but pull the bin dll out into the repo.

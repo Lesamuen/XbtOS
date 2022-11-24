@@ -1,6 +1,11 @@
 # Visual Studio Code settings
 .vscode
 
-# SDL2 binaries/includes for windows compilation
+# SDL2 binaries/libraries for Windows compilation
 SDL2.dll
+lib/*
 include/*
+
+# Output executable
+a.out
+a.exe
