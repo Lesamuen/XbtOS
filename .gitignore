@@ -1,0 +1,6 @@
+# Visual Studio Code settings
+.vscode
+
+# SDL2 binaries/includes for windows compilation
+SDL2.dll
+include/*
