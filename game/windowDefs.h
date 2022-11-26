@@ -1,5 +1,5 @@
-#ifndef DEFS_H
-#define DEFS_H
+#ifndef WINDOWDEFS_H
+#define WINDOWDEFS_H
 
 #include <SDL2\SDL.h>
 

@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "windowDefs.h"
 #include "SDLhelpers.h"
 
 #include <cstdio>

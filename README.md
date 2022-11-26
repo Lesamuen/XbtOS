@@ -27,4 +27,4 @@ Otherwise, use provided Makefile to compile.
 
 ### Windows (MinGW)
 Get the devel-mingw zip from [their github](https://github.com/libsdl-org/SDL/releases/tag/release-2.26.0).
-Place include and lib folders in repo, but pull the bin dll out into the repo.
+Place include and lib folders in repo, but pull bin/SDL2.dll separately out into the repo.

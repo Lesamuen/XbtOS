@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "windowDefs.h"
 
 const char* TITLE = "Test";
 

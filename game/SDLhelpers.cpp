@@ -1,5 +1,5 @@
 #include "SDLhelpers.h"
-#include "defs.h"
+#include "windowDefs.h"
 
 #include <cstdio>
 
