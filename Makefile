@@ -6,9 +6,9 @@ CC = g++
 
 # Specifies the additional compilation options we're using
 # -Wall keeps all warnings on
-# -Wl,-subsystem,windows removes console popup
+# -Wl,-subsystem,windows removes console popup & suppresses any console output (use only for final product)
 ifeq ($(OS), Windows_NT)
-	COMPILER_FLAGS = -Wall -Wl,-subsystem,windows
+	COMPILER_FLAGS = -Wall
 else
 	COMPILER_FLAGS = -Wall
 endif
