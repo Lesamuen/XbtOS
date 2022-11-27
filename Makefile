@@ -41,3 +41,7 @@ all : $(FILEIN)
 # Target that runs our executable
 run : $(FILEOUT)
 	./$(FILEOUT)
+
+# Target that removes our executable
+clean: $(FILEOUT)
+	rm ./$(FILEOUT)

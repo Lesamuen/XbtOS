@@ -2,15 +2,8 @@
 #define ACTIONS_H
 
 #include <vector>
+#include <unordered_map>
 #include <string>
-
-/* Simple structure describing a 2D set of Cartesian coordinates, whether relative or absolute.
- * Player character is assumed to be in the center of the grid at (0,0).
- * Bottom right is first quadrant (positive, positive)
- */
-struct coordinate {
-    int x, y;
-};
 
 /* List of damage types.
  * Every enemy move corresponds to one of these.
@@ -20,75 +13,52 @@ enum DAMAGE_TYPES {
     emotional
 };
 
+/* Simple structure describing a 2D set of Cartesian coordinates, whether relative or absolute.
+ * Player character is assumed to be in the center of the grid at (0,0).
+ * Bottom right is first quadrant (positive, positive)
+ */
+struct coordinate {
+    int x, y;
+
+    /* Per-parameter constructor.
+     */
+    coordinate(const int& x, const int& y);
+};
+
 /* The interface for a single 'card', or action.
  * Each one can:
  *      move the hero (generate a list of possible locations to move to),
  *      block damage types,
  *      charge up meter
  */
-class action {
-private:
+struct action {
     /* The name of the action.
      */
-    static std::string name;
+    std::string name;
 
     /* The description of the action, such as:
      * Move Diagonal 2
      * Block Physical
      * Charge 1
      */
-    static std::string description;
+    std::string description;
 
     /* A list of Coordinates that corresponds to squares the hero can move to with their action.
      */
-    static std::vector<coordinate> moves;
+    std::vector<coordinate> moves;
 
     /* A list of damage types the action blocks.
      * Should not have duplicates.
      */
-    static std::vector<DAMAGE_TYPES> blocks;
+    std::vector<DAMAGE_TYPES> blocks;
 
     /* Amount the action charges the hero's weapon.
      */
-    static int charge;
+    int charge;
 
-public:
-    /* Returns a list of Coordinates that corresponds to squares the hero can move to with this action.
-     * The hero may only choose one on their turn.
-     * Default is no squares, for a non-move action.
-     * 
-     * Output:
-     *      vector of Coordinate that describes where the hero can choose to move
+    /* Per-parameter constructor.
      */
-    std::vector<coordinate>& getMoves();
-
-    /* Returns a list of DAMAGE_TYPEs that corresponds to the ones that don't kill the hero.
-     * 
-     * Output:
-     *      vector of DAMAGE_TYPE that describes what damage types the hero blocks
-     */
-    std::vector<DAMAGE_TYPES>& getBlocks();
-
-    /* Returns the number of levels this move increases the charge meter by.
-     *
-     * Output:
-     *      integer describing charge level to increase charge meter by
-     */
-    int& getCharge();
-
-    /* Returns the name of the action.
-     *
-     * Output:
-     *      string describing the name of the action
-     */
-    std::string& getName();
-    
-    /* Returns the description of the action.
-     *
-     * Output:
-     *      string describing what the action does
-     */
-    std::string& getDescription();
+    action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPES>& blocks, const int& charge);
 };
 
 /* A 'deck' of actions; one per player character.
@@ -98,12 +68,12 @@ class heroActions {
 private:
     /* Full unordered list of actions available to the hero.
      */
-    std::vector<action> allActions;
+    std::vector<std::string> allActions;
 
     /* Randomized, ordered list of actions; drawn from the back.
      * Does not include used actions.
      */
-    std::vector<action> actionDeck;
+    std::vector<std::string> actionDeck;
 
     /* The list of actions the player character can use on his turn.
      * Max hand size 7, draw up to max hand size per turn.
@@ -113,7 +83,7 @@ private:
 
 public:
     /* Default constructor contains the default list of actions that is available to the hero at the beginning.
-     * Contains:
+     * Contains: (test) pass, charge, sidestep
      */
     heroActions();
 
@@ -125,12 +95,12 @@ public:
      */
     heroActions(const heroActions& other);
 
-    /* Copy a list of actions into a heroActions class.
+    /* Copy a list of action IDs into a heroActions class.
      *
      * Input:
      *      actionList = standard vector of actions
      */
-    heroActions(const std::vector<action>& actionList);
+    heroActions(const std::vector<std::string>& actionList);
 
     /* Shuffle the full action list into the deck, and re-empty the hand.
      */
@@ -152,5 +122,15 @@ public:
      */
     void discard(const int& index);
 };
+
+/* A hash table containing every action by their internal ID (different from action name).
+ */
+extern std::unordered_map<std::string, action> actions;
+
+/* A vector containing a list of action IDs that disincludes standard actions.
+ * Separated by "level" of cards; how strong they are, subjectively.
+ * Used to generate new cards to select from upon win.
+ */
+extern std::vector<std::vector<std::string>> actionGen; 
 
 #endif
