@@ -1,19 +1,19 @@
 #include "SDLhelpers.h"
 #include "windowDefs.h"
 
-#include <cstdio>
+#include <iostream>
 
 SDL_Window* init() {
 	// Init SDL graphics subsystem
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("ERROR in SDL video init: %s\n", SDL_GetError());
+		std::cout << "ERROR in SDL video init: " << SDL_GetError() << std::endl;
         throw 0;
 	}
 
     // Create Window
     SDL_Window* window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == NULL) {
-        printf("ERROR in SDL window creation: %s\n", SDL_GetError());
+        std::cout << "ERROR in SDL window creation: " << SDL_GetError() << std::endl;
         throw 1;
     }
 
@@ -40,7 +40,7 @@ std::vector<SDL_Surface*> loadAllMedia(SDL_PixelFormat*& format) {
             // Convert to given format
             SDL_Surface* convImage = SDL_ConvertSurface(rawImage, format, 0);
             if (convImage == NULL) {
-                printf("ERROR in converting image %i: %s\n", i, SDL_GetError());
+                std::cout << "ERROR in converting image " << i << ": " << SDL_GetError() << std::endl;
                 // Load default image
                 images.push_back(NULL);
             } else {
@@ -50,7 +50,7 @@ std::vector<SDL_Surface*> loadAllMedia(SDL_PixelFormat*& format) {
             // Cleanup previous unprocessed version
             SDL_FreeSurface(rawImage);
         } catch (int e) {
-		    printf("ERROR in loading image %i: %s\n", i, SDL_GetError());
+		    std::cout << "ERROR in loading image " << i << ": " << SDL_GetError() << std::endl;
             // Load default image
             images.push_back(NULL);
         } 

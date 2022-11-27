@@ -1,5 +1,5 @@
 # Specifies which files to compile
-FILEIN = game/main.cpp game/defs.cpp game/SDLhelpers.cpp
+FILEIN = game/main.cpp game/windowDefs.cpp game/SDLhelpers.cpp game/randomGen.cpp game/actions.cpp game/standardActions.cpp
 
 # Specifies compiler
 CC = g++
@@ -8,7 +8,7 @@ CC = g++
 # -Wall keeps all warnings on
 # -Wl,-subsystem,windows removes console popup
 ifeq ($(OS), Windows_NT)
-	COMPILER_FLAGS = -Wall
+	COMPILER_FLAGS = -Wall -Wl,-subsystem,windows
 else
 	COMPILER_FLAGS = -Wall
 endif

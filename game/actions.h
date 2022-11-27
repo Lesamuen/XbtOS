@@ -59,6 +59,10 @@ struct action {
     /* Per-parameter constructor.
      */
     action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPES>& blocks, const int& charge);
+
+    /* Ostream overload for information of action, for testing
+     */
+    friend std::ostream& operator<<(std::ostream& out, const action& action);
 };
 
 /* A 'deck' of actions; one per player character.
@@ -121,6 +125,11 @@ public:
      *      index = 0-index of action to be discarded from hand. Assumed to be valid.
      */
     void discard(const int& index);
+
+    /* Print every action in the hand.
+     * For testing purposes.
+     */
+    void printHand();
 };
 
 /* A hash table containing every action by their internal ID (different from action name).
