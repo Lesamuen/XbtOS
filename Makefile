@@ -2,7 +2,11 @@
 FILEIN = game/main.cpp game/windowDefs.cpp game/SDLhelpers.cpp game/randomGen.cpp game/actions.cpp game/standardActions.cpp
 
 # Specifies compiler
-CC = g++
+ifeq ($(OS), Windows_NT)
+	CC = g++
+else
+	CC = g++
+endif
 
 # Specifies the additional compilation options we're using
 # -Wall keeps all warnings on

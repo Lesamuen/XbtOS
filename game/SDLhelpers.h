@@ -1,7 +1,7 @@
 #ifndef SDLHELPERS_H
 #define SDLHELPERS_H
 
-#include <SDL2\SDL.h>
+#include <SDL2/SDL.h>
 
 #include <vector>
 

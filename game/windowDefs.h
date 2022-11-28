@@ -1,7 +1,7 @@
 #ifndef WINDOWDEFS_H
 #define WINDOWDEFS_H
 
-#include <SDL2\SDL.h>
+#include <SDL2/SDL.h>
 
 // Title
 extern const char* TITLE;
