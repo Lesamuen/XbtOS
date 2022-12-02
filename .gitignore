@@ -1,5 +1,5 @@
 # Visual Studio Code settings
-.vscode
+.vscode/*
 
 # SDL2 binaries/libraries for Windows compilation
 SDL2.dll

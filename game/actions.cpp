@@ -43,7 +43,7 @@ void heroActions::draw() {
     // Draw until 7
     while (hand.size() < 7) {
         int randAction = random(0, actionDeck.size() - 1);
-        hand.push_back(actions.at(allActions.at(randAction)));
+        hand.push_back(actions.at(actionDeck.at(randAction)));
         actionDeck.erase(actionDeck.begin() + randAction);
 
         if (actionDeck.size() == 0) {
@@ -58,7 +58,7 @@ void heroActions::discard(const int& index) {
 
 void heroActions::printHand() {
     for (int i = 0; i < hand.size(); i++) {
-        std::cout << hand.at(i);
+        std::cout << hand.at(i) << std::endl;
     }
 }
 
