@@ -67,11 +67,13 @@ int main (int argc, char** argv) {
 
                         case SDLK_s:
                             heroActions.shuffle();
+                            std::cout << "Shuffled." << std::endl;
                         break;
                         
                         case SDLK_d:
                             try {
                                 heroActions.draw();
+                                std::cout << "Drew." << std::endl;
                             } catch (int e) {
                                 if (e == 0) {
                                     std::cout << "The deck is empty." << std::endl;

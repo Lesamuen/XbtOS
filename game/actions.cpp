@@ -4,9 +4,6 @@
 
 #include <iostream>
 
-coordinate::coordinate(const int& x, const int& y) : x(x), y(y) {}
-
-
 action::action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPES>& blocks, const int& charge) : name(name), description(description), moves(moves), blocks(blocks), charge(charge) {}
 
 std::ostream& operator<<(std::ostream& out, const action& action) {

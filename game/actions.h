@@ -1,6 +1,8 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
+#include "coordinate.h"
+
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -11,18 +13,6 @@
 enum DAMAGE_TYPES {
     physical,
     emotional
-};
-
-/* Simple structure describing a 2D set of Cartesian coordinates, whether relative or absolute.
- * Player character is assumed to be in the center of the grid at (0,0).
- * Bottom right is first quadrant (positive, positive)
- */
-struct coordinate {
-    int x, y;
-
-    /* Per-parameter constructor.
-     */
-    coordinate(const int& x, const int& y);
 };
 
 /* The interface for a single 'card', or action.
