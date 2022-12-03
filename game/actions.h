@@ -10,7 +10,7 @@
 /* List of damage types.
  * Every enemy move corresponds to one of these.
  */
-enum DAMAGE_TYPES {
+enum DAMAGE_TYPE {
     physical,
     emotional
 };
@@ -40,7 +40,7 @@ struct action {
     /* A list of damage types the action blocks.
      * Should not have duplicates.
      */
-    std::vector<DAMAGE_TYPES> blocks;
+    std::vector<DAMAGE_TYPE> blocks;
 
     /* Amount the action charges the hero's weapon.
      */
@@ -48,7 +48,7 @@ struct action {
 
     /* Per-parameter constructor.
      */
-    action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPES>& blocks, const int& charge);
+    action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPE>& blocks, const int& charge = 0);
 
     /* Ostream overload for information of action, for testing
      */
