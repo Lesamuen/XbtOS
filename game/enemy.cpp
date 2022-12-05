@@ -50,18 +50,21 @@ moveGroup& enemy::nextMoves() {
 }
 
 
-std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& enemyPosition, const coordinate& heroPosition) {
+std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& enemyPosition) {
     // Always parse movement before attacks
+    // Ignore movement if it will bring enemy upon hero (0,0)
     switch (move.movementDirection) {
         case ENEMY_MOVEMENT_DIRECTION::absolute:
             // If absolute, add as-is
-            enemyPosition += move.movement;
+            if (enemyPosition.x + move.movement.x != 0 || enemyPosition.y + move.movement.y != 0) {
+                enemyPosition += move.movement;
+            }
         break;
 
         case ENEMY_MOVEMENT_DIRECTION::relative:
             {
             // Calculate angle towards hero, in 90 degree buckets
-            double angle = (std::atan2(heroPosition.y - enemyPosition.y, heroPosition.x - enemyPosition.x)) * 180 / (M_PI);
+            double angle = (std::atan2(-enemyPosition.y, -enemyPosition.x)) * 180 / (M_PI);
 
             // If relative, rotate towards hero
             // Movement in positive y direction.
@@ -70,13 +73,21 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
             // -135 - -45 : rotate towards negative y
             // -180 - -135, 135 - 180 : rotate towards negative x
             if (angle >= 45 && angle < 135) {
-                enemyPosition += move.movement;
+                if (enemyPosition.x + move.movement.x != 0 || enemyPosition.y + move.movement.y != 0) {
+                    enemyPosition += move.movement;
+                }
             } else if (angle >= -45 && angle < 45) {
-                enemyPosition += move.movement.rotation(3);
+                if (enemyPosition.x + move.movement.rotation(3).x != 0 || enemyPosition.y + move.movement.rotation(3).y != 0) {
+                    enemyPosition += move.movement.rotation(3);
+                }
             } else if (angle >= -135 && angle < -45) {
-                enemyPosition += move.movement.rotation(2);
+                if (enemyPosition.x + move.movement.rotation(2).x != 0 || enemyPosition.y + move.movement.rotation(2).y != 0) {
+                    enemyPosition += move.movement.rotation(2);
+                }
             } else {
-                enemyPosition += move.movement.rotation(1);
+                if (enemyPosition.x + move.movement.rotation(1).x != 0 || enemyPosition.y + move.movement.rotation(1).y != 0) {
+                    enemyPosition += move.movement.rotation(1);
+                }
             }
             }
         break;
@@ -97,7 +108,7 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
             // Rotate first, then move attack shape to enemy position
 
             // Calculate angle towards hero, in 90 degree buckets
-            double angle = (std::atan2(heroPosition.y - enemyPosition.y, heroPosition.x - enemyPosition.x)) * 180 / (M_PI);
+            double angle = (std::atan2(-enemyPosition.y, -enemyPosition.x)) * 180 / (M_PI);
 
             // 45 - 135 : no rotation
             // -45 - 45 : rotate towards positive x
@@ -128,33 +139,28 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
         
         case ENEMY_ATTACK_TYPE::direct:
             {
-            // Rotate first, then move attack shape to hero position
+            // Only rotate; hero is always at 0, 0
 
             // Calculate angle towards hero, in 90 degree buckets
-            double angle = (std::atan2(heroPosition.y - enemyPosition.y, heroPosition.x - enemyPosition.x)) * 180 / (M_PI);
+            double angle = (std::atan2(-enemyPosition.y, -enemyPosition.x)) * 180 / (M_PI);
 
             // 45 - 135 : no rotation
             // -45 - 45 : rotate towards positive x
             // -135 - -45 : rotate towards negative y
             // -180 - -135, 135 - 180 : rotate towards negative x
             if (angle >= 45 && angle < 135) {
-                for (int i = 0; i < attack.size(); i++) {
-                    attack[i] += heroPosition;
-                }
+                // Do nothing
             } else if (angle >= -45 && angle < 45) {
                 for (int i = 0; i < attack.size(); i++) {
                     attack[i].rotate(3);
-                    attack[i] += heroPosition;
                 }
             } else if (angle >= -135 && angle < -45) {
                 for (int i = 0; i < attack.size(); i++) {
                     attack[i].rotate(2);
-                    attack[i] += heroPosition;
                 }
             } else {
                 for (int i = 0; i < attack.size(); i++) {
                     attack[i].rotate(1);
-                    attack[i] += heroPosition;
                 }
             }
             }
@@ -165,7 +171,7 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
             // First, do rotation and aim towards hero
 
             // Calculate angle towards hero, in 90 degree buckets
-            double angle = (std::atan2(heroPosition.y - enemyPosition.y, heroPosition.x - enemyPosition.x)) * 180 / (M_PI);
+            double angle = (std::atan2(-enemyPosition.y, -enemyPosition.x)) * 180 / (M_PI);
 
             // 45 - 135 : no rotation
             // -45 - 45 : rotate towards positive x
@@ -189,18 +195,14 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
 
             // Calculate relative coordinates in the direction of the hero that corresponds to the limit of range
             // Get hypotenuse for exact distance between enemy and hero
-            double hyp = sqrt(pow(heroPosition.x - enemyPosition.x, 2) + pow(heroPosition.y - enemyPosition.y, 2));
+            double hyp = sqrt(pow(-enemyPosition.x, 2) + pow(-enemyPosition.y, 2));
 
-            if (hyp <= move.range) {
-                // If exact distance less than range, then just put on top of hero.
-                for (int i = 0; i < attack.size(); i++) {
-                    attack[i] += heroPosition;
-                }
-            } else {
+            // If exact distance less than range, then just put on top of hero.
+            if (hyp > move.range) {
                 // Get (exact) relative coordinates using similar triangle; new hypotenuse equal to max range
                 double ratio = move.range/hyp;
-                double x = ratio * (heroPosition.x - enemyPosition.x);
-                double y = ratio * (heroPosition.y - enemyPosition.y);
+                double x = ratio * (-enemyPosition.x);
+                double y = ratio * (-enemyPosition.y);
                 double finalx, finaly;
                 double highestRange = 0;
 
