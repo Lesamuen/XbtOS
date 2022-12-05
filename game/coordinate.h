@@ -16,9 +16,32 @@ struct coordinate {
      */
     coordinate operator+(const coordinate& other);
 
-    /* Subtraction for coordinates.
+    /* Addition for coordinates, in-place.
      */
-    coordinate operator-(const coordinate& other);
+    coordinate& operator+=(const coordinate& other);
+
+    /* Return a rotated version of the coordinate, rotated around the origin.
+     * Only in 90 degree increments.
+     * 
+     * Input:
+     *      amount = amount of 90 degree increments to rotate clockwise (in terms of screen space) by. Downwards (positive y) is default.
+     * 
+     * Throws:
+     *      0 - amount is not within 0-3.
+     */
+    coordinate rotation(int amount) const;
+
+
+    /* Rotated the coordinate in place, around the origin.
+     * Only in 90 degree increments.
+     * 
+     * Input:
+     *      amount = amount of 90 degree increments to rotate clockwise (in terms of screen space) by. Downwards (positive y) is default.
+     * 
+     * Throws:
+     *      0 - amount is not within 0-3.
+     */
+    void rotate(int amount);
 };
 
 #endif

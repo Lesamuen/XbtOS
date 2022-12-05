@@ -1,5 +1,5 @@
 # Specifies which files to compile
-FILEIN = game/main.cpp game/windowDefs.cpp game/SDLhelpers.cpp game/randomGen.cpp game/coordinate.cpp game/actions.cpp game/standardActions.cpp
+FILEIN = game/main.cpp game/windowDefs.cpp game/SDLhelpers.cpp game/randomGen.cpp game/coordinate.cpp game/actions.cpp game/standardActions.cpp game/enemy.cpp
 
 # Specifies compiler
 ifeq ($(OS), Windows_NT)

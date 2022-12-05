@@ -1,19 +1,12 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
+#include "enums.h"
 #include "coordinate.h"
 
 #include <vector>
 #include <unordered_map>
 #include <string>
-
-/* List of damage types.
- * Every enemy move corresponds to one of these.
- */
-enum DAMAGE_TYPE {
-    physical,
-    emotional
-};
 
 /* The interface for a single 'card', or action.
  * Each one can:
