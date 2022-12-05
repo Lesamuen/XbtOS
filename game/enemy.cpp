@@ -12,11 +12,15 @@ threatenedTile& threatenedTile::operator+=(const coordinate& other) {
 }
 
 
-enemyMove::enemyMove(const coordinate& movement, const ENEMY_MOVEMENT_DIRECTION& movementDirection, const std::vector<threatenedTile>& attackShape, const ENEMY_ATTACK_TYPE& attackType, const int& range) : movement(movement), movementDirection(movementDirection), attackShape(attackShape), attackType(attackType), range(range) {}
+enemyMove::enemyMove(const std::string& name, const coordinate& movement, const ENEMY_MOVEMENT_DIRECTION& movementDirection, const std::vector<threatenedTile>& attackShape, const ENEMY_ATTACK_TYPE& attackType, const int& range) : name(name), movement(movement), movementDirection(movementDirection), attackShape(attackShape), attackType(attackType), range(range) {}
 
 
 void moveGroup::addMove(const enemyMove& move) {
     moves.push_back(move);
+}
+
+void moveGroup::clear() {
+    moves.clear();
 }
 
 int* moveGroup::newInstance() {
@@ -39,7 +43,7 @@ void moveGroup::resetGroup(int* tracker) {
 }
 
 
-enemy::enemy(int power) : moveSet(), power(power) {}
+enemy::enemy(const std::string& name, const int& power) : name(name), moveSet(), power(power) {}
 
 void enemy::addMoveGroup(const moveGroup& moveGroup) {
     moveSet.push_back(moveGroup);
@@ -241,3 +245,6 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
 
     return attack;
 }
+
+
+std::unordered_map<std::string, enemy> enemies;

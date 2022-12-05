@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 /* A threatened square, with a coordinate and a damage type.
  */
@@ -67,7 +68,7 @@ struct enemyMove {
 
     /* Per-parameter constructor.
      */
-    enemyMove(const coordinate& movement, const ENEMY_MOVEMENT_DIRECTION& movementDirection, const std::vector<threatenedTile>& attackShape, const ENEMY_ATTACK_TYPE& attackType, const int& range = 0);
+    enemyMove(const std::string& name, const coordinate& movement, const ENEMY_MOVEMENT_DIRECTION& movementDirection, const std::vector<threatenedTile>& attackShape, const ENEMY_ATTACK_TYPE& attackType, const int& range = 0);
 };
 
 /* A movegroup consists of 1 or more moves; allows for multi-turn predictable behavior.
@@ -85,6 +86,10 @@ public:
      *      move = the move to add to the group
      */
     void addMove(const enemyMove& move);
+
+    /* Empty the vector of moves.
+     */
+    void clear();
     
     /* Creates a new 'instance' of the movegroup by allocating an integer tracker.
      * Allows for multiple enemies on the map at once.
@@ -125,6 +130,10 @@ public:
  * An object of this only holds information globally for an enemy type; values such as position will be handled elsewhere.
  */
 class enemy {
+    /* The display name of the enemy.
+     */
+    std::string name;
+
     /* The set of moveGroups that is randomly selected from to define the enemy's behavior.
      */
     std::vector<moveGroup> moveSet;
@@ -138,7 +147,7 @@ public:
     /* Constructor that initializes power and leaves moveSet empty, to avoid high copying overhead.
      * Initialize moveSet later by adding moveGroups manually.
      */
-    enemy(int power);
+    enemy(const std::string& name, const int& power);
 
     /* Adds a move group to the move set. 
      *
@@ -155,7 +164,12 @@ public:
     moveGroup& nextMoves();
 };
 
-/* Parse an enemyMove based on enemy and hero position, and set new enemy position and get exact threatened squares. */
+/* Parse an enemyMove based on enemy and hero position, and set new enemy position and get exact threatened squares.
+ */
 std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& enemyPosition, const coordinate& heroPosition);
+
+/* A hash table containing every enemy by their internal ID (different from enemy name).
+ */
+extern std::unordered_map<std::string, enemy> enemies;
 
 #endif

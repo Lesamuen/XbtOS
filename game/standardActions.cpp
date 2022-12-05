@@ -1,4 +1,5 @@
 #include "standardActions.h"
+#include "actions.h"
 
 void initStandardActions() {
     std::vector<coordinate> moveBuilder;
