@@ -24,7 +24,11 @@ enum class ENEMY_ATTACK_TYPE {
  */
 enum class DAMAGE_TYPE {
     physical,
-    emotional
+    arcane,
+    flame,
+    ice,
+    chemical,
+    mind
 };
 
 #endif
