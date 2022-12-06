@@ -2,6 +2,8 @@
 #define WINDOWDEFS_H
 
 #include <SDL2/SDL.h>
+#include <string>
+#include <unordered_map>
 
 // Title
 extern const char* TITLE;
@@ -18,14 +20,7 @@ extern SDL_Rect screenRect;
 // Ticks per second of core game loop
 extern int TPS;
 
-// Defs for IDs of images that need to be loaded
-enum IMAGE_ID {
-    img_test,
-    img_test2,
-    NUM_IMAGES
-};
-
-// Array that maps file paths to IMAGE_ID
-extern const char* IMAGE_PATHS[IMAGE_ID::NUM_IMAGES];
+// Hash table that maps images to their path string
+extern std::unordered_map<std::string, SDL_Surface*> images;
 
 #endif

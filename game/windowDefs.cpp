@@ -1,16 +1,13 @@
 #include "windowDefs.h"
 
-const char* TITLE = "Test";
+const char* TITLE = "X by the One Shot";
 
-int SCREEN_WIDTH = 800;
+int SCREEN_WIDTH = 1600;
 
-int SCREEN_HEIGHT = 600;
+int SCREEN_HEIGHT = 900;
 
 SDL_Rect screenRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
 int TPS = 60;
 
-const char* IMAGE_PATHS[IMAGE_ID::NUM_IMAGES] = {
-    "img/test.bmp",
-    "img/test2.bmp"
-};
+std::unordered_map<std::string, SDL_Surface*> images;

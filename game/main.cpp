@@ -2,7 +2,10 @@
 #include "SDLhelpers.h"
 #include "actions.h"
 #include "standardActions.h"
+#include "standardEnemies.h"
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 
 int main (int argc, char** argv) {
@@ -11,17 +14,31 @@ int main (int argc, char** argv) {
     try {
         window = init();
     } catch (int e) {
+        if (e == 0) {
+		    std::cout << "ERROR in SDL video init: " << SDL_GetError() << std::endl;
+        } else if (e == 1) {
+            std::cout << "ERROR in SDL_image PNG system init: " << IMG_GetError() << std::endl;
+        } else if (e == 2) {
+		    std::cout << "ERROR in window creation: " << SDL_GetError() << std::endl;
+        }
 		std::cout << "Failed to initialize!\nQuitting...\n";
         return 0;
     }
 	SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
 
     // Place images in memory
-    std::vector<SDL_Surface*> images = loadAllMedia(screenSurface->format);
+    loadStandardMedia(screenSurface->format);
 
     // Initialize the game Actions
     initStandardActions();
+
+    // Initialize the game Enemies
+    initStandardEnemies();
+
+    // Initialize the hero
     heroActions heroActions;
+
+
 
     // Game loop handler
     bool quitFlag = false;
@@ -49,11 +66,11 @@ int main (int argc, char** argv) {
                         // Toggle image
                         case SDLK_ESCAPE:
                             if (test) {
-                                SDL_BlitScaled(images[IMAGE_ID::img_test], NULL, screenSurface, &screenRect);
+                                SDL_BlitScaled(images.at("test.bmp"), NULL, screenSurface, &screenRect);
                                 test = false;
                                 render = true;
                             } else {
-                                SDL_BlitScaled(images[IMAGE_ID::img_test2], NULL, screenSurface, &screenRect);
+                                SDL_BlitScaled(images.at("test.png"), NULL, screenSurface, &screenRect);
                                 test = true;
                                 render = true;
                             }

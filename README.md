@@ -23,8 +23,28 @@ Currently using SDL 2.26.0; the project might work with previous versions, but g
 Otherwise, use provided Makefile to compile.
 
 ### Linux
-`sudo apt-get install libsdl2-dev`
+To install dependencies:
+`sudo apt-get install build-essential libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev`
+
+Then to compile:
+`make`
+
+To run:
+`make run`
+
+To remove executable:
+`make clean`
 
 ### Windows (MinGW)
 Get the devel-mingw zip from [their github](https://github.com/libsdl-org/SDL/releases/tag/release-2.26.0).
 Place include and lib folders in repo, but pull bin/SDL2.dll separately out into the repo.
+
+Do the same for the extension libraries:
+[Images](https://github.com/libsdl-org/SDL_image/releases/tag/release-2.6.2)
+[Fonts](https://github.com/libsdl-org/SDL_ttf/releases/tag/release-2.20.1)
+
+Then, use `make` with MinGW to compile.
+Targets:
+`make`
+`make run`
+`make clean`

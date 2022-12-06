@@ -1,5 +1,5 @@
 # Specifies which files to compile
-FILEIN = game/main.cpp game/windowDefs.cpp game/SDLhelpers.cpp game/randomGen.cpp game/coordinate.cpp game/actions.cpp game/standardActions.cpp game/enemy.cpp
+FILEIN = game/main.cpp game/windowDefs.cpp game/SDLhelpers.cpp game/randomGen.cpp game/coordinate.cpp game/actions.cpp game/standardActions.cpp game/enemy.cpp game/standardEnemies.cpp
 
 # Specifies compiler
 ifeq ($(OS), Windows_NT)
@@ -26,9 +26,9 @@ endif
 
 # Specifies the libraries we're linking against
 ifeq ($(OS), Windows_NT)
-	LINKER_FLAGS = -Llib -lmingw32 -lSDL2main -lSDL2
+	LINKER_FLAGS = -Llib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 else
-	LINKER_FLAGS = -lSDL2
+	LINKER_FLAGS = -lSDL2 -lSDL2_image
 endif
 
 # Specifies the name of our executable
