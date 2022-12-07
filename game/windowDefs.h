@@ -2,6 +2,7 @@
 #define WINDOWDEFS_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 #include <unordered_map>
 
@@ -23,10 +24,16 @@ extern int TPS;
 // Hash table that maps images to their path string
 extern std::unordered_map<std::string, SDL_Texture*> images;
 
+// Hash table that maps font textures to their contained text
+extern std::unordered_map<std::string, SDL_Texture*> textTextures;
+
 // The main window the game will be using
 extern SDL_Window* window;
 
 // The renderer for the window
 extern SDL_Renderer* renderer;
+
+// Temporarily, we will be using a single font for the entire app; Roboto Condensed
+extern TTF_Font* globalFont;
 
 #endif

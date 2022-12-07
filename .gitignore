@@ -7,6 +7,7 @@ krita/*.kra~
 # SDL2 binaries/libraries for Windows compilation
 SDL2.dll
 SDL2_image.dll
+SDL2_ttf.dll
 lib/*
 include/*
 

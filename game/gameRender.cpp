@@ -1,5 +1,6 @@
 #include "gameRender.h"
 #include "windowDefs.h"
+#include "SDLhelpers.h"
 
 #include <SDL2/SDL.h>
 
@@ -43,10 +44,57 @@ void renderGameScreen() {
         SDL_RenderDrawLine(renderer, SCREEN_WIDTH * i / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH * i / 6, SCREEN_HEIGHT * 12 / 18);
     }
 
+    // Put text onto buttons
+    SDL_Color white = {255, 255, 255, 255};
+    SDL_Texture* text = renderText("Play Card", white);
+    int textW, textH;
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+    // Multiply by 1.4 for text leading
+    textH *= 1.4;
+
+    SDL_Rect fittedSize = fitRect(textW, textH, {0, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
+
+    SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+    
+    // Repeat for others
+    text = renderText("Discard", white);
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+    textH *= 1.4;
+    fittedSize = fitRect(textW, textH, {SCREEN_WIDTH / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
+    SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+    text = renderText("Pass", white);
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+    textH *= 1.4;
+    fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 2 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
+    SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+    text = renderText("Sidestep", white);
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+    textH *= 1.4;
+    fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 3 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
+    SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+    text = renderText("Charge", white);
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+    textH *= 1.4;
+    fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 4 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
+    SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+    text = renderText("Strike", white);
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+    textH *= 1.4;
+    fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 5 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
+    SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+
     // Card separators (deck + 7 cards, bottom 3/9)
     for (int i = 0; i < 8; i++) {
         SDL_RenderDrawLine(renderer, SCREEN_WIDTH * i / 8, SCREEN_HEIGHT * 2 / 3, SCREEN_WIDTH * i / 8, SCREEN_HEIGHT);
     }
+    SDL_RenderDrawLine(renderer, SCREEN_WIDTH / 8, SCREEN_HEIGHT * 13 / 18, SCREEN_WIDTH, SCREEN_HEIGHT * 13 / 18);
+
+    // Text for deck
+    text = renderText("DECK", white);
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+    textH *= 1.4;
+    fittedSize = fitRect(textW, textH, {0, SCREEN_HEIGHT * 2 / 3, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 18});
+    SDL_RenderCopy(renderer, text, NULL, &fittedSize);
 
     // Reset drawColor to black
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

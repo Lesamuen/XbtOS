@@ -25,11 +25,19 @@ int main (int argc, char** argv) {
             break;
 
             case 2:
-		        std::cout << "ERROR in window creation: " << SDL_GetError() << std::endl;
+		        std::cout << "ERROR in SDL_TTF system init: " << TTF_GetError() << std::endl;
             break;
 
             case 3:
+		        std::cout << "ERROR in window creation: " << SDL_GetError() << std::endl;
+            break;
+
+            case 4:
 		        std::cout << "ERROR in renderer creation: " << SDL_GetError() << std::endl;
+            break;
+
+            case 5:
+		        std::cout << "ERROR in font obtaining: " << TTF_GetError() << std::endl;
             break;
         }
 		std::cout << "Failed to initialize!\nQuitting...\n";
@@ -122,7 +130,7 @@ int main (int argc, char** argv) {
         SDL_Delay(1000/TPS);
     }
 
-	close(window, images);
+	close();
 
 	return 0;
 }

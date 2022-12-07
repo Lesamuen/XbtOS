@@ -26,9 +26,9 @@ endif
 
 # Specifies the libraries we're linking against
 ifeq ($(OS), Windows_NT)
-	LINKER_FLAGS = -Llib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+	LINKER_FLAGS = -Llib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 else
-	LINKER_FLAGS = -lSDL2 -lSDL2_image
+	LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
 endif
 
 # Specifies the name of our executable

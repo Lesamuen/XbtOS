@@ -14,8 +14,10 @@
  * Throws:
  *      0 - Video initialization failure
  *      1 - PNG Loading system initialization failure
- *      2 - Window creation failure
- *      3 - Renderer creation failure
+ *      2 - Font loading system initialization failure
+ *      3 - Window creation failure
+ *      4 - Renderer creation failure
+ *      5 - Failed to load the font for the game
  */
 void init();
 
@@ -40,15 +42,26 @@ void loadMedia(const std::string& path);
  */
 void loadStandardMedia();
 
-/* Cleanup SDL environment and close window.
- *
+/* Returns the texture for the text.
+ * Tries to get it from the previously created ones in memory.
+ * If not available, creates a new texture, to prevent too much resource cost.
+ * 
  * Input:
- *      window = main application window to be closed
- *      images = vector of images to be unloaded
+ *      text = the string that is the contents of the wanted texture
+ *      color = the SDL_Color of the text
  * 
  * Throws:
- *      0 - List of image paths not found
+ *      0 - Unable to render text surface
+ *      1 - Unable to convert surface to texture
  */
-void close (SDL_Window*& window, std::unordered_map<std::string, SDL_Texture*>& images);
+SDL_Texture* renderText(const std::string& text, const SDL_Color& color);
+
+/* Cleanup SDL environment and close window.
+ */
+void close ();
+
+/* Fits a given box to a bounding SDL_Rect variably
+ */
+SDL_Rect fitRect(const int& width, const int& height, const SDL_Rect& bound);
 
 #endif

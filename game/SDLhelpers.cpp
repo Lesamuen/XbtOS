@@ -1,6 +1,7 @@
 #include "SDLhelpers.h"
 #include "windowDefs.h"
 
+#include <string>
 #include <iostream>
 #include <fstream>
 
@@ -16,17 +17,28 @@ void init() {
         throw 1;
     }
 
+    // Init SDL TTF extension library
+    if (TTF_Init() == -1) {
+        throw 2;
+    }
+
     // Create Window
     window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == NULL) {
-        throw 2;
+        throw 3;
     }
 
     // Create texture renderer for created window
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL) {
-        throw 3;
+        throw 4;
     }
+
+    // Load the global font (currently roboto condensed)
+    globalFont = TTF_OpenFont("font/RobotoCondensed-Regular.ttf", 72);
+    if (globalFont == NULL) {
+        throw 5;
+    } 
 
     // Set default renderer fill color (black)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -76,9 +88,43 @@ void loadStandardMedia() {
     pathList.close();
 }
 
-void close (SDL_Window*& window, std::unordered_map<std::string, SDL_Texture*>& images) {
+SDL_Texture* renderText(const std::string& text, const SDL_Color& color) {
+    // Test for previous existence
+    if (textTextures.find(text) != textTextures.end()) {
+        return textTextures.find(text)->second;
+    }
+
+    // Create surface, then convert to texture
+    SDL_Surface* generatedSurface = TTF_RenderText_Solid(globalFont, text.c_str(), color);
+
+    if (generatedSurface == NULL) {
+        throw 0;
+    }
+
+    SDL_Texture* generatedTexture = SDL_CreateTextureFromSurface(renderer, generatedSurface);
+    SDL_FreeSurface(generatedSurface);
+
+    if (generatedTexture == NULL) {
+        throw 1;
+    }
+
+    // Place onto global hash table
+    textTextures.emplace(text, generatedTexture);
+
+    return generatedTexture;
+}
+
+void close () {
+    // Close font
+    TTF_CloseFont(globalFont);
+
 	// Cleanup images
 	for (std::unordered_map<std::string, SDL_Texture*>::iterator i = images.begin(); i != images.end(); i++) {
+		SDL_DestroyTexture(i->second);
+	}
+
+	// Cleanup text
+	for (std::unordered_map<std::string, SDL_Texture*>::iterator i = textTextures.begin(); i != textTextures.end(); i++) {
 		SDL_DestroyTexture(i->second);
 	}
 
@@ -86,6 +132,31 @@ void close (SDL_Window*& window, std::unordered_map<std::string, SDL_Texture*>& 
 	SDL_DestroyWindow(window);
 	
     // End SDL processes
+    TTF_Quit();
     IMG_Quit();
 	SDL_Quit();
+}
+
+SDL_Rect fitRect(const int& width, const int& height, const SDL_Rect& bound) {
+    // Use size ratio to fit to a box and keep proportions
+    double sizeRatio = (double) width / height;
+    double boundRatio = ((double) bound.w) / ((double) bound.h);
+
+    // Test whether to fit to height or length
+    SDL_Rect fittedSize;
+    if (sizeRatio > boundRatio) {
+        // Fit to width
+        fittedSize.x = bound.x;
+        fittedSize.w = bound.w;
+        fittedSize.h = bound.w / sizeRatio;
+        fittedSize.y = bound.y + (bound.h / 2.0) - (fittedSize.h / 2.0);
+    } else {
+        // Fit to height
+        fittedSize.y = bound.y;
+        fittedSize.h = bound.h;
+        fittedSize.w = bound.h * sizeRatio;
+        fittedSize.x = bound.x + (bound.w / 2.0) - (fittedSize.w / 2.0);
+    }
+
+    return fittedSize;
 }
