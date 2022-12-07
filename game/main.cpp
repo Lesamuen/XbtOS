@@ -52,18 +52,18 @@ int main (int argc, char** argv) {
     initStandardEnemies();
     // Initialize the hero
     heroActions heroActions;
-    heroActions.shuffle();
 
+    // Keep track of current enemy
+    std::string currentEnemy = "NULL";
     // Keep track of remaining "time" in ticks in enemy's turn
     int enemyTurnTracker = 0;
-
     // Keep track of who's turn it currently is
     bool playerTurn = false;
-
+    // Keep track of selected action in hand
+    int selectedAction = -1;
 
     // Keep track of mouse position
     int mouseX = 0, mouseY = 0;
-
     // Game loop handler
     bool quitFlag = false;
     // Event handler
@@ -102,11 +102,42 @@ int main (int argc, char** argv) {
                     switch (event.button.button) {
                         // Left mouse button
                         case SDL_BUTTON_LEFT:
-                            // Detect if play button pressed
                             switch (currentScene) {
                                 case SCENE::title:
-                                    if ((mouseX >= (SCREEN_WIDTH * 5) / 16 && mouseX <= (SCREEN_WIDTH * 11) / 16) && (mouseY >= (SCREEN_HEIGHT * 7) / 9 && mouseY <= (SCREEN_HEIGHT * 8) / 9)) {
+                                    // Detect if play button pressed
+                                    if (inBounds(mouseX, mouseY, {(SCREEN_WIDTH * 5) / 16, (SCREEN_HEIGHT * 7) / 9, (SCREEN_WIDTH * 6) / 16, SCREEN_HEIGHT / 9})) {
                                         currentScene = SCENE::game;
+                                    }
+                                break;
+                                
+                                case SCENE::game:
+                                    if (playerTurn) {
+                                        // Use an action
+                                        if (selectedAction != -1 && inBounds(mouseX, mouseY, {0, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18})) {
+                                            
+                                        }
+
+                                        // Discard an action
+                                        else if (selectedAction > -1 && inBounds(mouseX, mouseY, {SCREEN_WIDTH / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18})) {
+                                            heroActions.discard(selectedAction);
+                                            selectedAction = -1;
+                                        }
+                                        
+                                        // Select an action
+                                        else if (inBounds(mouseX, mouseY, {SCREEN_WIDTH * 2 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH * 3 / 6, SCREEN_HEIGHT / 18})) {
+                                            selectedAction = -(mouseX / (SCREEN_WIDTH / 6));
+                                        } else if (inBounds(mouseX, mouseY, {SCREEN_WIDTH / 8, SCREEN_HEIGHT * 12 / 18, SCREEN_WIDTH * 7 / 8, SCREEN_HEIGHT / 3})) {
+                                            selectedAction = (mouseX / (SCREEN_WIDTH / 8)) - 1;
+                                            // Detect if invalid
+                                            if (selectedAction >= heroActions.getNumHand()) {
+                                                selectedAction = -1;
+                                            }
+                                        }
+
+                                        // Deselect action
+                                        else {
+                                            selectedAction = -1;
+                                        }
                                     }
                                 break;
                             }
@@ -117,10 +148,18 @@ int main (int argc, char** argv) {
         }
 
         if (currentScene == SCENE::game) {
+            // If enemy is dead, set new enemy
+            if (currentEnemy == "NULL") {
+                // for now, just shuffle
+                heroActions.shuffle();
+                currentEnemy = "NotNULL";
+            }
+
             if (enemyTurnTracker > 0) {
                 enemyTurnTracker--;
             } else if (!playerTurn) {
                 // Switch to player's turn; draw for hand
+                playerTurn = true;
                 try {
                     heroActions.draw();
                 } catch (int e) {
@@ -142,6 +181,7 @@ int main (int argc, char** argv) {
             case SCENE::game:
                 renderGameScreen();
                 renderActions(heroActions);
+                renderSelectedAction(selectedAction);
             break;
         }
 

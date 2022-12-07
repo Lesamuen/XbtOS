@@ -160,3 +160,7 @@ SDL_Rect fitRect(const int& width, const int& height, const SDL_Rect& bound) {
 
     return fittedSize;
 }
+
+bool inBounds(const int& testX, const int& testY, const SDL_Rect& bound) {
+    return (testX >= bound.x && testX <= bound.x + bound.w) && (testY >= bound.y && testY <= bound.y + bound.h);
+}

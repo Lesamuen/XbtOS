@@ -58,10 +58,14 @@ SDL_Texture* renderText(const std::string& text, const SDL_Color& color);
 
 /* Cleanup SDL environment and close window.
  */
-void close ();
+void close();
 
 /* Fits a given box to a bounding SDL_Rect variably
  */
 SDL_Rect fitRect(const int& width, const int& height, const SDL_Rect& bound);
+
+/* Tests if a point is within bounds of a given rectangle.
+ */
+bool inBounds(const int& testX, const int& testY, const SDL_Rect& bound);
 
 #endif

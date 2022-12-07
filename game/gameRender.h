@@ -24,4 +24,8 @@ void renderGameScreen();
  */
 void renderActions(heroActions& heroActions);
 
+/* Renders a golden box around the selected action
+ */
+void renderSelectedAction(const int& action);
+
 #endif

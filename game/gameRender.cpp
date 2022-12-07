@@ -147,3 +147,20 @@ void renderActions(heroActions& heroActions) {
         SDL_RenderCopy(renderer, text, NULL, &fittedSize);
     }
 }
+
+void renderSelectedAction(const int& action) {
+    if (action == -1) {
+        // No action selected
+        return;
+    } else if (action > -1) {
+        SDL_Rect box = {SCREEN_WIDTH * (action + 1) / 8, SCREEN_HEIGHT * 2 / 3, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 3};
+        SDL_SetRenderDrawColor(renderer, 255, 215, 0, 255);
+        SDL_RenderDrawRect(renderer, &box);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    } else {
+        SDL_Rect box = {SCREEN_WIDTH * (action * (-1)) / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18};
+        SDL_SetRenderDrawColor(renderer, 255, 215, 0, 255);
+        SDL_RenderDrawRect(renderer, &box);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    }
+}
