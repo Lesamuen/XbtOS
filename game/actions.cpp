@@ -64,6 +64,25 @@ void heroActions::printHand() {
     }
 }
 
+int heroActions::getTotalActions() {
+    return allActions.size();
+}
+
+int heroActions::getCurrentActions() {
+    return actionDeck.size();
+}
+
+int heroActions::getNumHand() {
+    return hand.size();
+}
+
+action& heroActions::getHandAction (int index) {
+    if (index >= hand.size()) {
+        throw 0;
+    }
+
+    return hand.at(index);
+}
 
 std::unordered_map<std::string, action> actions;
 

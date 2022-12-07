@@ -1,6 +1,8 @@
 #ifndef GAMERENDER_H
 #define GAMERENDER_H
 
+#include "actions.h"
+
 #include <SDL2/SDL.h>
 
 /* This function handles rendering for the initial title screen.
@@ -17,5 +19,9 @@ void renderTitleScreen(bool playSelected);
  * Deck/cards (width 2/16, bottom 3/9)
  */
 void renderGameScreen();
+
+/* Renders the information of the deck and hand of the player.
+ */
+void renderActions(heroActions& heroActions);
 
 #endif

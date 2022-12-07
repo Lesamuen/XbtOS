@@ -109,6 +109,14 @@ public:
      */
     void discard(const int& index);
 
+    int getTotalActions();
+
+    int getCurrentActions();
+
+    int getNumHand();
+    
+    action& getHandAction(int index);
+
     /* Print every action in the hand.
      * For testing purposes.
      */

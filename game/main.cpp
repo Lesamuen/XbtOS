@@ -52,6 +52,14 @@ int main (int argc, char** argv) {
     initStandardEnemies();
     // Initialize the hero
     heroActions heroActions;
+    heroActions.shuffle();
+
+    // Keep track of remaining "time" in ticks in enemy's turn
+    int enemyTurnTracker = 0;
+
+    // Keep track of who's turn it currently is
+    bool playerTurn = false;
+
 
     // Keep track of mouse position
     int mouseX = 0, mouseY = 0;
@@ -108,6 +116,19 @@ int main (int argc, char** argv) {
             }
         }
 
+        if (currentScene == SCENE::game) {
+            if (enemyTurnTracker > 0) {
+                enemyTurnTracker--;
+            } else if (!playerTurn) {
+                // Switch to player's turn; draw for hand
+                try {
+                    heroActions.draw();
+                } catch (int e) {
+                    // do nothing for now
+                }
+            }
+        }
+
         switch (currentScene) {
             case SCENE::title:
                 // Detect if play button selected
@@ -120,6 +141,7 @@ int main (int argc, char** argv) {
 
             case SCENE::game:
                 renderGameScreen();
+                renderActions(heroActions);
             break;
         }
 
