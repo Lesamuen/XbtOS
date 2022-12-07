@@ -31,4 +31,12 @@ enum class DAMAGE_TYPE {
     mind
 };
 
+/* List of scenes in game.
+ */
+enum class SCENE {
+    title,
+    game,
+    gameover
+};
+
 #endif

@@ -1,2 +1,3 @@
-test.bmp
-test.png
+TitleScreen.png
+PlayButton.png
+PlayButtonSelected.png

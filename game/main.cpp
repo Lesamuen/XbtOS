@@ -2,7 +2,9 @@
 #include "SDLhelpers.h"
 #include "actions.h"
 #include "standardActions.h"
+#include "enemy.h"
 #include "standardEnemies.h"
+#include "gameRender.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -36,26 +38,22 @@ int main (int argc, char** argv) {
 
     // Place images in memory
     loadStandardMedia();
-
     // Initialize the game Actions
     initStandardActions();
-
     // Initialize the game Enemies
     initStandardEnemies();
-
     // Initialize the hero
     heroActions heroActions;
 
-
+    // Keep track of mouse position
+    int mouseX = 0, mouseY = 0;
 
     // Game loop handler
     bool quitFlag = false;
     // Event handler
     SDL_Event event;
-    // Test toggle state; switch between test images
-    bool test = false;
-    // Whether need to update image (only update render when needed, to save resources)
-    bool render = false;
+    // Scene handler
+    SCENE currentScene = SCENE::title;
 
     // Main game loop
     while (!quitFlag) {
@@ -69,60 +67,45 @@ int main (int argc, char** argv) {
 
                 // Keyboard inputs
                 case SDL_KEYDOWN:
-                    std::cout << event.key.keysym.sym << " was pressed." << std::endl;
                     switch (event.key.keysym.sym) {
-                        // Toggle image
+                        // Another way to exit
                         case SDLK_ESCAPE:
-                            SDL_RenderClear(renderer);
-                            if (test) {
-                                SDL_RenderCopy(renderer, images.at("test.bmp"), NULL, NULL);
-                                test = false;
-                                render = true;
-                            } else {
-                                SDL_RenderCopy(renderer, images.at("test.png"), NULL, NULL);
-                                test = true;
-                                render = true;
-                            }
+                            quitFlag = true;
                         break;
+                    }
+                break;
 
-                        // Testing cards
-                        case SDLK_a:
-                            std::cout << "Printing hand:" << std::endl;
-                            heroActions.printHand();
-                        break;
+                // Mouse movement
+                case SDL_MOUSEMOTION:
+                    // Update mouse position
+                    SDL_GetMouseState(&mouseX, &mouseY);
+                break;
 
-                        case SDLK_s:
-                            heroActions.shuffle();
-                            std::cout << "Shuffled." << std::endl;
-                        break;
-                        
-                        case SDLK_d:
-                            try {
-                                heroActions.draw();
-                                std::cout << "Drew." << std::endl;
-                            } catch (int e) {
-                                if (e == 0) {
-                                    std::cout << "The deck is empty." << std::endl;
-                                } else
-                                if (e == 1) {
-                                    std::cout << "The hand is full." << std::endl;
-                                }
-                            }
+                // Mouse clicks (release)
+                case SDL_MOUSEBUTTONUP:
+                    switch (event.button.button) {
+                        // Left mouse button
+                        case SDL_BUTTON_LEFT:
+
                         break;
                     }
                 break;
             }
         }
 
-        // Render (update surface) if needed
-        if (render)
-        {
-            render = false;
-            SDL_RenderPresent(renderer);
+        if (currentScene == SCENE::title) {
+            // Detect if play button selected
+            if ((mouseX >= (SCREEN_WIDTH * 5) / 16 && mouseX <= (SCREEN_WIDTH * 11) / 16) && (mouseY >= (SCREEN_HEIGHT * 7) / 9 && mouseY <= (SCREEN_HEIGHT * 8) / 9)) {
+                renderTitleScreen(true);
+            } else {
+                renderTitleScreen(false);
+            }
         }
+
+        // Render final frame
+        SDL_RenderPresent(renderer);
         
         // Simulate ticks per second naively
-        // TODO: keep track of system time to get true TPS
         SDL_Delay(1000/TPS);
     }
 
