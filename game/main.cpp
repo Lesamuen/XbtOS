@@ -10,24 +10,32 @@
 
 int main (int argc, char** argv) {
     // Attempt to initialize program
-	SDL_Window* window;
     try {
-        window = init();
+        init();
     } catch (int e) {
-        if (e == 0) {
-		    std::cout << "ERROR in SDL video init: " << SDL_GetError() << std::endl;
-        } else if (e == 1) {
-            std::cout << "ERROR in SDL_image PNG system init: " << IMG_GetError() << std::endl;
-        } else if (e == 2) {
-		    std::cout << "ERROR in window creation: " << SDL_GetError() << std::endl;
+        switch (e) {
+            case 0:
+		        std::cout << "ERROR in SDL video init: " << SDL_GetError() << std::endl;
+            break;
+
+            case 1: 
+                std::cout << "ERROR in SDL_image PNG system init: " << IMG_GetError() << std::endl;
+            break;
+
+            case 2:
+		        std::cout << "ERROR in window creation: " << SDL_GetError() << std::endl;
+            break;
+
+            case 3:
+		        std::cout << "ERROR in renderer creation: " << SDL_GetError() << std::endl;
+            break;
         }
 		std::cout << "Failed to initialize!\nQuitting...\n";
         return 0;
     }
-	SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
 
     // Place images in memory
-    loadStandardMedia(screenSurface->format);
+    loadStandardMedia();
 
     // Initialize the game Actions
     initStandardActions();
@@ -65,12 +73,13 @@ int main (int argc, char** argv) {
                     switch (event.key.keysym.sym) {
                         // Toggle image
                         case SDLK_ESCAPE:
+                            SDL_RenderClear(renderer);
                             if (test) {
-                                SDL_BlitScaled(images.at("test.bmp"), NULL, screenSurface, &screenRect);
+                                SDL_RenderCopy(renderer, images.at("test.bmp"), NULL, NULL);
                                 test = false;
                                 render = true;
                             } else {
-                                SDL_BlitScaled(images.at("test.png"), NULL, screenSurface, &screenRect);
+                                SDL_RenderCopy(renderer, images.at("test.png"), NULL, NULL);
                                 test = true;
                                 render = true;
                             }
@@ -109,7 +118,7 @@ int main (int argc, char** argv) {
         if (render)
         {
             render = false;
-            SDL_UpdateWindowSurface(window);
+            SDL_RenderPresent(renderer);
         }
         
         // Simulate ticks per second naively

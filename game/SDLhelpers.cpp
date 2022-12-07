@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-SDL_Window* init() {
+void init() {
 	// Init SDL graphics subsystem
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         throw 0;
@@ -17,33 +17,37 @@ SDL_Window* init() {
     }
 
     // Create Window
-    SDL_Window* window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == NULL) {
         throw 2;
     }
 
-    return window;
+    // Create texture renderer for created window
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (renderer == NULL) {
+        throw 3;
+    }
+
+    // Set default renderer fill color (black)
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 }
 
-void loadMedia(const std::string& path, SDL_PixelFormat*& format) {
-	// Try to load image
-    SDL_Surface* rawImage = IMG_Load(("img/" + path).c_str());
-	if (rawImage == NULL) {
-		throw 0;
-	}
-    
-    // Try to convert image
-    SDL_Surface* convertedImage = SDL_ConvertSurface(rawImage, format, 0);
-    SDL_FreeSurface(rawImage);
-    if (convertedImage == NULL) {
-        throw 1;
+void loadMedia(const std::string& path) {
+    // Try to load image
+    SDL_Texture* loadedImage = IMG_LoadTexture(renderer, ("img/" + path).c_str());
+
+    // Place onto hash table in specific format (will just be null if unable to load)
+    images.emplace(path, loadedImage);
+
+    if (loadedImage == NULL) {
+        throw 0;
     }
 
     // Place onto hash table in specific format (will just be null if unable to load)
-    images.emplace(path, convertedImage);
+    images.emplace(path, loadedImage);
 }
 
-void loadStandardMedia(SDL_PixelFormat*& format) {
+void loadStandardMedia() {
     // Load each image based on a list in external file img/imagePaths.txt
     // Try to get list
     std::ifstream pathList("img/imagePaths.txt");
@@ -55,7 +59,7 @@ void loadStandardMedia(SDL_PixelFormat*& format) {
     while (!pathList.eof()) {
         std::getline(pathList, path);
         try {
-            loadMedia(path, format);
+            loadMedia(path);
             std::cout << "Successfully loaded image " << path << std::endl;
         } catch (int e) {
             if (e == 0) {
@@ -69,10 +73,10 @@ void loadStandardMedia(SDL_PixelFormat*& format) {
     pathList.close();
 }
 
-void close (SDL_Window*& window, std::unordered_map<std::string, SDL_Surface*>& images) {
+void close (SDL_Window*& window, std::unordered_map<std::string, SDL_Texture*>& images) {
 	// Cleanup images
-	for (std::unordered_map<std::string, SDL_Surface*>::iterator i = images.begin(); i != images.end(); i++) {
-		SDL_FreeSurface(i->second);
+	for (std::unordered_map<std::string, SDL_Texture*>::iterator i = images.begin(); i != images.end(); i++) {
+		SDL_DestroyTexture(i->second);
 	}
 
     // Destroy window

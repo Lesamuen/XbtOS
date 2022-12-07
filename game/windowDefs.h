@@ -21,6 +21,12 @@ extern SDL_Rect screenRect;
 extern int TPS;
 
 // Hash table that maps images to their path string
-extern std::unordered_map<std::string, SDL_Surface*> images;
+extern std::unordered_map<std::string, SDL_Texture*> images;
+
+// The main window the game will be using
+extern SDL_Window* window;
+
+// The renderer for the window
+extern SDL_Renderer* renderer;
 
 #endif
