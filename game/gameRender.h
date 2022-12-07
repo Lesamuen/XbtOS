@@ -11,4 +11,11 @@
  */
 void renderTitleScreen(bool playSelected);
 
+/* Renders the static parts of the game screen;
+ * 11x11 tile map (from top, 5.5/9 of height)
+ * Button bar ((5.5 to 6)/9 height)
+ * Deck/cards (width 2/16, bottom 3/9)
+ */
+void renderGameScreen();
+
 #endif

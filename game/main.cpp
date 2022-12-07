@@ -86,20 +86,33 @@ int main (int argc, char** argv) {
                     switch (event.button.button) {
                         // Left mouse button
                         case SDL_BUTTON_LEFT:
-
+                            // Detect if play button pressed
+                            switch (currentScene) {
+                                case SCENE::title:
+                                    if ((mouseX >= (SCREEN_WIDTH * 5) / 16 && mouseX <= (SCREEN_WIDTH * 11) / 16) && (mouseY >= (SCREEN_HEIGHT * 7) / 9 && mouseY <= (SCREEN_HEIGHT * 8) / 9)) {
+                                        currentScene = SCENE::game;
+                                    }
+                                break;
+                            }
                         break;
                     }
                 break;
             }
         }
 
-        if (currentScene == SCENE::title) {
-            // Detect if play button selected
-            if ((mouseX >= (SCREEN_WIDTH * 5) / 16 && mouseX <= (SCREEN_WIDTH * 11) / 16) && (mouseY >= (SCREEN_HEIGHT * 7) / 9 && mouseY <= (SCREEN_HEIGHT * 8) / 9)) {
-                renderTitleScreen(true);
-            } else {
-                renderTitleScreen(false);
-            }
+        switch (currentScene) {
+            case SCENE::title:
+                // Detect if play button selected
+                if ((mouseX >= (SCREEN_WIDTH * 5) / 16 && mouseX <= (SCREEN_WIDTH * 11) / 16) && (mouseY >= (SCREEN_HEIGHT * 7) / 9 && mouseY <= (SCREEN_HEIGHT * 8) / 9)) {
+                    renderTitleScreen(true);
+                } else {
+                    renderTitleScreen(false);
+                }
+            break;
+
+            case SCENE::game:
+                renderGameScreen();
+            break;
         }
 
         // Render final frame

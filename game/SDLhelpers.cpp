@@ -29,7 +29,10 @@ void init() {
     }
 
     // Set default renderer fill color (black)
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+    // Enable alpha blending
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 }
 
 void loadMedia(const std::string& path) {
