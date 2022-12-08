@@ -30,7 +30,7 @@ void renderActions(heroActions& heroActions);
  */
 void renderSelectedAction(const int& action); 
 
-void renderHero();
+void renderHero(const double& chargeAmount);
 
 void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName);
 

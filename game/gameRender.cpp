@@ -152,7 +152,8 @@ void renderSelectedAction(const int& action) {
     }
 }
 
-void renderHero() {
+void renderHero(const double& chargeAmount) {
+    // Hero icon at 0,0
     SDL_Color heroColor = {255, 215, 0, 255};
     SDL_Texture* text = renderText("HERO", heroColor);
     
@@ -160,6 +161,11 @@ void renderHero() {
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
     SDL_Rect fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 31 / 64, SCREEN_HEIGHT * 5 / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+
+    // Charge bar
+    SDL_Rect chargeBar = {0, (int) ((1.0 - chargeAmount) * 660), 30, (int) (chargeAmount * 660)};
+    SDL_Rect chargeBarLocation = {SCREEN_WIDTH * 63 / 64, (int) ((1.0 - chargeAmount) * (SCREEN_HEIGHT * 11 / 18)), SCREEN_WIDTH / 64, (int) (chargeAmount * (SCREEN_HEIGHT * 11 / 18))};
+    SDL_RenderCopy(renderer, images.at("ChargeBar.png"), &chargeBar, &chargeBarLocation);
 }
 
 void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName) {

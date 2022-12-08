@@ -5,3 +5,4 @@ EnemyPointer.png
 GameOverScreen.png
 PlayAgainButton.png
 PlayAgainButtonSelected.png
+ChargeBar.png

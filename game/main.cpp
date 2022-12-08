@@ -140,7 +140,6 @@ int main (int argc, char** argv) {
                                             if (selectedAction >= 0){
                                                 heroActions.discard(selectedAction);
                                             }
-                                            currentAction = actions.at("null");
                                             selectedAction = -1;
                                             playerTurn = false;
 
@@ -151,6 +150,7 @@ int main (int argc, char** argv) {
                                                 currentThreatened.at(i).x -=selectedMovement.x;
                                                 currentThreatened.at(i).y -=selectedMovement.y;
                                             }
+                                            selectedMovement = {0, 0};
 
                                             // Resolve charge
                                             if (charge < enemies.at(currentEnemy).getPower()) {
@@ -164,6 +164,7 @@ int main (int argc, char** argv) {
                                             // For now, can only strike while adjacent or diagonal to enemy
                                             if (currentAction.strike && (charge == enemies.at(currentEnemy).getPower()) && (enemyPosition.x >= -1 && enemyPosition.x <= 1 && enemyPosition.y >= -1 && enemyPosition.y <= 1)) {
                                                 enemyDead = true;
+                                                currentAction = actions.at("null");
                                                 break;
                                             }
                                             
@@ -172,7 +173,7 @@ int main (int argc, char** argv) {
                                             for (int i = 0; i < (int) currentThreatened.size(); i++) {
                                                 if (currentThreatened.at(i).x == 0 && currentThreatened.at(i).y == 0) {
                                                     playerDead = true;
-                                                    for (int j = 0; j < (int) currentAction.blocks.size(); i++) {
+                                                    for (int j = 0; j < (int) currentAction.blocks.size(); j++) {
                                                         if (currentAction.blocks.at(j) == currentThreatened.at(i).type) {
                                                             playerDead = false;
                                                             break;
@@ -329,7 +330,7 @@ int main (int argc, char** argv) {
                 renderGameScreen();
                 renderActions(heroActions);
                 renderSelectedAction(selectedAction);
-                renderHero();
+                renderHero((double) charge / enemies.at(currentEnemy).getPower());
                 renderEnemy(enemyPosition, enemies.at(currentEnemy).getName());
                 renderThreatenedTiles(currentThreatened);
                 renderMovementTiles(currentAction.moves, selectedMovement, enemyPosition);
