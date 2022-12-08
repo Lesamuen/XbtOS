@@ -15,12 +15,8 @@ std::ostream& operator<<(std::ostream& out, const action& action) {
 
 heroActions::heroActions() : allActions(), actionDeck(), hand() {
     allActions.push_back("shift");
-    allActions.push_back("shift");
-    allActions.push_back("slide");
     allActions.push_back("slide");
     allActions.push_back("shield");
-    allActions.push_back("shield");
-    allActions.push_back("embolden");
     allActions.push_back("embolden");
 }
 
