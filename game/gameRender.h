@@ -32,7 +32,7 @@ void renderSelectedAction(const int& action);
 
 void renderHero(const double& chargeAmount);
 
-void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName);
+void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName, const bool& dead);
 
 void renderThreatenedTiles(const std::vector<threatenedTile>& currentThreatened);
 

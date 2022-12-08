@@ -168,7 +168,7 @@ void renderHero(const double& chargeAmount) {
     SDL_RenderCopy(renderer, images.at("ChargeBar.png"), &chargeBar, &chargeBarLocation);
 }
 
-void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName) {
+void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName, const bool& dead) {
     // First test if enemy even needs to be rendered; if off-grid, render an arrow pointing to it instead
     if (enemyPosition.x < -5 || enemyPosition.x > 5 || enemyPosition.y < -5 || enemyPosition.y > 5) {
         // Get point on border that is directly on line between enemy and hero
@@ -212,14 +212,21 @@ void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName) 
         SDL_Point arrowTip = {SCREEN_WIDTH / 64, 0};
         SDL_RenderCopyEx(renderer, images.at("EnemyPointer.png"), NULL, &arrowLocation, angle, &arrowTip, SDL_FLIP_NONE);
     } else {
-        // Just render enemy name on location
+        // Just render enemy name on location for now
         SDL_Color enemyColor = {142, 0, 0, 255};
         SDL_Texture* text = renderText(enemyName, enemyColor);
         
+        SDL_Rect enemyTile = {SCREEN_WIDTH * (31 + enemyPosition.x * 2) / 64, SCREEN_HEIGHT * (5 + enemyPosition.y) / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18};
+
         int textW, textH;
         SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-        SDL_Rect fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * (31 + enemyPosition.x * 2) / 64, SCREEN_HEIGHT * (5 + enemyPosition.y) / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18});
+        SDL_Rect fittedSize = fitRect(textW, textH, enemyTile);
         SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+
+        // Render red X on top if dead
+        if (dead) {
+            SDL_RenderCopy(renderer, images.at("Dead.png"), NULL, &enemyTile);
+        }
     }
 }
 

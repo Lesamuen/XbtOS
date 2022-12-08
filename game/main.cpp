@@ -164,6 +164,9 @@ int main (int argc, char** argv) {
                                             // For now, can only strike while adjacent or diagonal to enemy
                                             if (currentAction.strike && (charge == enemies.at(currentEnemy).getPower()) && (enemyPosition.x >= -1 && enemyPosition.x <= 1 && enemyPosition.y >= -1 && enemyPosition.y <= 1)) {
                                                 enemyDead = true;
+                                                currentThreatened.clear();
+                                                // New battle after 5 seconds
+                                                enemyRespawnTimer = 5 * TPS;
                                                 currentAction = actions.at("null");
                                                 break;
                                             }
@@ -258,7 +261,14 @@ int main (int argc, char** argv) {
                                 break;
 
                                 case SCENE::gameover:
-                                    // TODO: implement restart
+                                    // Detect if play again button pressed
+                                    if (inBounds(mouseX, mouseY, {(SCREEN_WIDTH * 5) / 16, (SCREEN_HEIGHT * 7) / 9, (SCREEN_WIDTH * 6) / 16, SCREEN_HEIGHT / 9})) {
+                                        // Reinitialize all values
+                                        currentThreatened.clear();
+                                        playerDead = false;
+                                        enemyDead = true;
+                                        currentScene = SCENE::game;
+                                    }
                                 break;
                             }
                         break;
@@ -280,6 +290,7 @@ int main (int argc, char** argv) {
                 // TEST with just slime for now
                 currentEnemy = "slime";
                 // Randomize starting position
+                enemyPosition = {0, 0};
                 while (enemyPosition.x == 0 && enemyPosition.y == 0) {
                     enemyPosition.x = random(-5, 5);
                     enemyPosition.y = random(-5, 5);
@@ -292,7 +303,7 @@ int main (int argc, char** argv) {
 
             if (enemyTurnTracker > 0) {
                 enemyTurnTracker--;
-            } else if (!playerTurn) {
+            } else if (!playerTurn && !enemyDead) {
                 // Switch to player's turn; take enemy turn, and draw for hand
                 playerTurn = true;
 
@@ -332,7 +343,7 @@ int main (int argc, char** argv) {
                 renderActions(heroActions);
                 renderSelectedAction(selectedAction);
                 renderHero((double) charge / enemies.at(currentEnemy).getPower());
-                renderEnemy(enemyPosition, enemies.at(currentEnemy).getName());
+                renderEnemy(enemyPosition, enemies.at(currentEnemy).getName(), enemyDead);
                 renderThreatenedTiles(currentThreatened);
                 renderMovementTiles(currentAction.moves, selectedMovement, enemyPosition);
 

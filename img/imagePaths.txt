@@ -6,3 +6,4 @@ GameOverScreen.png
 PlayAgainButton.png
 PlayAgainButtonSelected.png
 ChargeBar.png
+Dead.png
