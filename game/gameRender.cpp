@@ -51,8 +51,6 @@ void renderGameScreen() {
     SDL_Texture* text = renderText("Play Card", white);
     int textW, textH;
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    // Multiply by 1.4 for text leading
-    textH *= 1.4;
 
     SDL_Rect fittedSize = fitRect(textW, textH, {0, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
 
@@ -61,27 +59,22 @@ void renderGameScreen() {
     // Repeat for others
     text = renderText("Discard", white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {SCREEN_WIDTH / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
     text = renderText("Pass", white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 2 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
     text = renderText("Sidestep", white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 3 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
     text = renderText("Charge", white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 4 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
     text = renderText("Strike", white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 5 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
 
@@ -94,7 +87,6 @@ void renderGameScreen() {
     // Text for deck
     text = renderText("DECK", white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {0, SCREEN_HEIGHT * 2 / 3, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
 
@@ -109,25 +101,21 @@ void renderActions(heroActions& heroActions) {
     // First, do deck text
     SDL_Texture* text = renderText("Current Actions", white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     SDL_Rect fittedSize = fitRect(textW, textH, {0, SCREEN_HEIGHT * 14 / 18, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
 
     text = renderText(std::to_string(heroActions.getCurrentActions()), white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {0, SCREEN_HEIGHT * 15 / 18, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
 
     text = renderText("Total Actions", white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {0, SCREEN_HEIGHT * 16 / 18, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
 
     text = renderText(std::to_string(heroActions.getTotalActions()), white);
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-    textH *= 1.4;
     fittedSize = fitRect(textW, textH, {0, SCREEN_HEIGHT * 17 / 18, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 18});
     SDL_RenderCopy(renderer, text, NULL, &fittedSize);
 
@@ -137,13 +125,11 @@ void renderActions(heroActions& heroActions) {
     
         text = renderText(action.name, white);
         SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-        textH *= 1.4;
         fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * (i + 1) / 8, SCREEN_HEIGHT * 12 / 18, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 18});
         SDL_RenderCopy(renderer, text, NULL, &fittedSize);
 
         text = renderText(action.description, white);
         SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
-        textH *= 1.4;
         fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * (i + 1) / 8, SCREEN_HEIGHT * 8 / 9, SCREEN_WIDTH / 8, SCREEN_HEIGHT / 9});
         SDL_RenderCopy(renderer, text, NULL, &fittedSize);
     }
