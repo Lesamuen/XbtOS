@@ -48,7 +48,7 @@ void renderGameScreen() {
 
     // Put text onto buttons
     SDL_Color white = {255, 255, 255, 255};
-    SDL_Texture* text = renderText("Play Card", white);
+    SDL_Texture* text = renderText("Play Action", white);
     int textW, textH;
     SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
 
