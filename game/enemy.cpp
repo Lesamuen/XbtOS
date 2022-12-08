@@ -32,7 +32,7 @@ void moveGroup::removeInstance(int*& tracker) {
 }
 
 enemyMove& moveGroup::nextMove(int*& tracker) {
-    if (*tracker == moves.size()) {
+    if (*tracker == (int) moves.size()) {
         throw 0;
     }
     return moves[(*tracker)++];
@@ -110,7 +110,7 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
     switch (move.attackType) {
         case ENEMY_ATTACK_TYPE::absolute:
             // Move attack shape to enemy position
-            for (int i = 0; i < attack.size(); i++) {
+            for (int i = 0; i < (int) attack.size(); i++) {
                 attack[i] += enemyPosition;
             }
         break;
@@ -127,21 +127,21 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
             // -135 - -45 : rotate towards negative y
             // -180 - -135, 135 - 180 : rotate towards negative x
             if (angle >= 45 && angle < 135) {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i] += enemyPosition;
                 }
             } else if (angle >= -45 && angle < 45) {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(3);
                     attack[i] += enemyPosition;
                 }
             } else if (angle >= -135 && angle < -45) {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(2);
                     attack[i] += enemyPosition;
                 }
             } else {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(1);
                     attack[i] += enemyPosition;
                 }
@@ -163,15 +163,15 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
             if (angle >= 45 && angle < 135) {
                 // Do nothing
             } else if (angle >= -45 && angle < 45) {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(3);
                 }
             } else if (angle >= -135 && angle < -45) {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(2);
                 }
             } else {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(1);
                 }
             }
@@ -192,15 +192,15 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
             if (angle >= 45 && angle < 135) {
                 // Do nothing
             } else if (angle >= -45 && angle < 45) {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(3);
                 }
             } else if (angle >= -135 && angle < -45) {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(2);
                 }
             } else {
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i].rotate(1);
                 }
             }
@@ -243,7 +243,7 @@ std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& en
                 // Place rotated attack on adjusted position
                 coordinate attackPosition(finalx, finaly);
                 attackPosition += enemyPosition;
-                for (int i = 0; i < attack.size(); i++) {
+                for (int i = 0; i < (int) attack.size(); i++) {
                     attack[i] += attackPosition;
                 }
             }

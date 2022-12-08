@@ -59,7 +59,7 @@ void heroActions::discard(const int& index) {
 }
 
 void heroActions::printHand() {
-    for (int i = 0; i < hand.size(); i++) {
+    for (int i = 0; i < (int) hand.size(); i++) {
         std::cout << hand.at(i) << std::endl;
     }
 }
@@ -77,7 +77,7 @@ int heroActions::getNumHand() {
 }
 
 action& heroActions::getHandAction (int index) {
-    if (index >= hand.size()) {
+    if (index >= (int) hand.size()) {
         throw 0;
     }
 

@@ -234,7 +234,7 @@ void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName) 
 void renderThreatenedTiles(const std::vector<threatenedTile>& currentThreatened) {
     // Transparent red
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 100);
-    for (int i = 0; i < currentThreatened.size(); i++) {
+    for (int i = 0; i < (int) currentThreatened.size(); i++) {
         const threatenedTile& tile = currentThreatened.at(i);
         SDL_Rect tileBox = {SCREEN_WIDTH * (31 + 2 * tile.x) / 64, SCREEN_HEIGHT * (5 + tile.y) / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18};
         SDL_RenderFillRect(renderer, &tileBox);
@@ -249,7 +249,7 @@ void renderMovementTiles(const std::vector<coordinate>& movement, const coordina
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 50);
 
     // Show available tiles to move to
-    for (int i = 0; i < movement.size(); i++) {
+    for (int i = 0; i < (int) movement.size(); i++) {
         const coordinate& tile = movement.at(i);
         // Not valid if on enemy
         if (tile.x == enemyPosition.x && tile.y == enemyPosition.y) {
