@@ -207,6 +207,7 @@ int main (int argc, char** argv) {
                                         
                                         // Select an action
                                         else if (inBounds(mouseX, mouseY, {SCREEN_WIDTH * 2 / 6, SCREEN_HEIGHT * 11 / 18, SCREEN_WIDTH * 4 / 6, SCREEN_HEIGHT / 18})) {
+                                            selectedMovement = {0, 0};
                                             selectedAction = -(mouseX / (SCREEN_WIDTH / 6));
                                             if (selectedAction == -2) {
                                                 currentAction = actions.at("pass");
@@ -219,6 +220,7 @@ int main (int argc, char** argv) {
                                                 currentAction = actions.at("strike");
                                             }
                                         } else if (inBounds(mouseX, mouseY, {SCREEN_WIDTH / 8, SCREEN_HEIGHT * 12 / 18, SCREEN_WIDTH * 7 / 8, SCREEN_HEIGHT / 3})) {
+                                            selectedMovement = {0, 0};
                                             selectedAction = (mouseX / (SCREEN_WIDTH / 8)) - 1;
                                             // Detect if invalid
                                             if (selectedAction >= heroActions.getNumHand()) {
@@ -285,16 +287,24 @@ int main (int argc, char** argv) {
                 // Reset hero
                 heroActions.shuffle();
                 charge = 0;
+                playerTurn = false;
 
                 enemyDead = false;
-                // TEST with just slime for now
-                currentEnemy = "slime";
+                // Temporary random between goblin and slime
+                if (random(0, 1) == 0) {
+                    currentEnemy = "slime";
+                } else {
+                    currentEnemy = "goblin";
+                }
+
                 // Randomize starting position
                 enemyPosition = {0, 0};
                 while (enemyPosition.x == 0 && enemyPosition.y == 0) {
-                    enemyPosition.x = random(-5, 5);
-                    enemyPosition.y = random(-5, 5);
+                    enemyPosition.x = random(-3, 3);
+                    enemyPosition.y = random(-3, 3);
                 }
+
+                // Reset enemy values
                 enemyTurnTracker = TPS * 2;
                 currentMoves.removeInstance(currentMove);
                 currentMoves = enemies.at(currentEnemy).nextMoves();
