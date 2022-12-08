@@ -104,7 +104,7 @@ public:
      * Input:
      *      tracker = the tracker provided by newInstance
      */
-    void removeInstance(int* tracker);
+    void removeInstance(int*& tracker);
 
     /* Gets the next move, and advances the tracker for the move group.
      *
@@ -115,14 +115,14 @@ public:
      * Throws:
      *      0 - No more moves left in group
      */
-    enemyMove& nextMove(int* tracker);
+    enemyMove& nextMove(int*& tracker);
 
     /* Resets the move tracker back to the beginning.
      *
      * Input:
      *      tracker = the previously provided tracker pointer
      */
-    void resetGroup(int* tracker);
+    void resetGroup(int*& tracker);
 };
 
 /* An enemy has a set of moveGroups it randomly selects from to decide its behavior.
@@ -170,7 +170,7 @@ public:
 
 /* Parse an enemyMove based on enemy and hero position, and set new enemy position and get exact threatened squares.
  */
-std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& enemyPosition, const coordinate& heroPosition);
+std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& enemyPosition);
 
 /* A hash table containing every enemy by their internal ID (different from enemy name).
  */

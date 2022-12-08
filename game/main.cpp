@@ -5,6 +5,7 @@
 #include "enemy.h"
 #include "standardEnemies.h"
 #include "gameRender.h"
+#include "randomGen.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -56,7 +57,12 @@ int main (int argc, char** argv) {
     // Keep track of current enemy
     std::string currentEnemy = "NULL";
     coordinate enemyPosition = {0, 0};
-    // Keep track of remaining "time" in ticks in enemy's turn
+    moveGroup currentMoves;
+    int* currentMove;
+    // Keep track of current threatened tiles on the grid
+    std::vector<threatenedTile> currentThreatened;
+
+    // Keep track of remaining "time" in ticks in enemy's turn; enemy actually takes turn at end of timer, and switches to player turn
     int enemyTurnTracker = 0;
     // Keep track of who's turn it currently is
     bool playerTurn = false;
@@ -167,17 +173,27 @@ int main (int argc, char** argv) {
             if (currentEnemy == "NULL") {
                 // for now, just shuffle
                 heroActions.shuffle();
-                //test
+
+                //test with slime by default
                 currentEnemy = "slime";
-                enemyPosition.x = -2;
-                enemyPosition.y = -6;
+                // Randomize starting position
+                while (enemyPosition.x == 0 && enemyPosition.y == 0) {
+                    enemyPosition.x = random(-5, 5);
+                    enemyPosition.y = random(-5, 5);
+                }
+                enemyTurnTracker = TPS * 2;
+                currentMoves = enemies.at(currentEnemy).nextMoves();
+                currentMove = currentMoves.newInstance();
             }
 
             if (enemyTurnTracker > 0) {
                 enemyTurnTracker--;
             } else if (!playerTurn) {
-                // Switch to player's turn; draw for hand
+                // Switch to player's turn; take enemy turn, and draw for hand
                 playerTurn = true;
+
+                currentThreatened = parseEnemyMove(currentMoves.nextMove(currentMove), enemyPosition);
+
                 try {
                     heroActions.draw();
                 } catch (int e) {
@@ -202,6 +218,7 @@ int main (int argc, char** argv) {
                 renderSelectedAction(selectedAction);
                 renderHero();
                 renderEnemy(enemyPosition, enemies.at(currentEnemy).getName());
+                renderThreatenedTiles(currentThreatened);
             break;
         }
 

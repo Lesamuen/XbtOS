@@ -27,18 +27,18 @@ int* moveGroup::newInstance() {
     return new int(0);
 }
 
-void moveGroup::removeInstance(int* tracker) {
+void moveGroup::removeInstance(int*& tracker) {
     delete tracker;
 }
 
-enemyMove& moveGroup::nextMove(int* tracker) {
+enemyMove& moveGroup::nextMove(int*& tracker) {
     if (*tracker == moves.size()) {
         throw 0;
     }
     return moves[(*tracker)++];
 }
 
-void moveGroup::resetGroup(int* tracker) {
+void moveGroup::resetGroup(int*& tracker) {
     *tracker = 0;
 }
 

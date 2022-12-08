@@ -2,8 +2,10 @@
 #define GAMERENDER_H
 
 #include "actions.h"
+#include "enemy.h"
 
 #include <SDL2/SDL.h>
+#include <vector>
 
 /* This function handles rendering for the initial title screen.
  * Only two states: whether the play button is hovered or not
@@ -31,5 +33,7 @@ void renderSelectedAction(const int& action);
 void renderHero();
 
 void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName);
+
+void renderThreatenedTiles(const std::vector<threatenedTile>& currentThreatened);
 
 #endif

@@ -231,3 +231,16 @@ void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName) 
         SDL_RenderCopy(renderer, text, NULL, &fittedSize);
     }
 }
+
+void renderThreatenedTiles(const std::vector<threatenedTile>& currentThreatened) {
+    // Transparent red
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 100);
+    for (int i = 0; i < currentThreatened.size(); i++) {
+        const threatenedTile& tile = currentThreatened.at(i);
+        SDL_Rect tileBox = {SCREEN_WIDTH * (31 + 2 * tile.x) / 64, SCREEN_HEIGHT * (5 + tile.y) / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18};
+        SDL_RenderFillRect(renderer, &tileBox);
+    }
+
+    // Return to black
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
