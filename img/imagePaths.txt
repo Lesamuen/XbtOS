@@ -2,3 +2,6 @@ TitleScreen.png
 PlayButton.png
 PlayButtonSelected.png
 EnemyPointer.png
+GameOverScreen.png
+PlayAgainButton.png
+PlayAgainButtonSelected.png

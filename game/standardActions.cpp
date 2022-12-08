@@ -5,6 +5,10 @@ void initStandardActions() {
     std::vector<coordinate> moveBuilder;
     std::vector<DAMAGE_TYPE> blockBuilder;
 
+    // dummy empty action
+    // null
+    actions.emplace("null", action("", "", moveBuilder, blockBuilder));
+
     // free actions:
     // Pass
     actions.emplace("pass", action("Pass", "Do nothing", moveBuilder, blockBuilder));
@@ -19,6 +23,9 @@ void initStandardActions() {
     moveBuilder.emplace_back(0, -1);
     actions.emplace("sidestep", action("Sidestep", "Move adjacently 1 tile", moveBuilder, blockBuilder));
     moveBuilder.clear();
+
+    // Strike
+    actions.emplace("strike", action("Strike", "Commit the final blow", moveBuilder, blockBuilder, 0, true));
 
     // lvl 1 actions:
     // Shift

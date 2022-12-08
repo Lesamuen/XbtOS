@@ -13,7 +13,7 @@
  * Input:
  *      playSelected = boolean whether player is hovering over button
  */
-void renderTitleScreen(bool playSelected);
+void renderTitleScreen(const bool& playSelected);
 
 /* Renders the static parts of the game screen;
  * 11x11 tile map (from top, 5.5/9 of height)
@@ -35,5 +35,9 @@ void renderHero();
 void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName);
 
 void renderThreatenedTiles(const std::vector<threatenedTile>& currentThreatened);
+
+void renderMovementTiles(const std::vector<coordinate>& movement, const coordinate& selected, const coordinate& enemyPosition);
+
+void renderGameOverScreen(const bool& playAgainSelected);
 
 #endif

@@ -39,9 +39,13 @@ struct action {
      */
     int charge;
 
+    /* Whether the action enables an attack.
+     */
+    bool strike;
+
     /* Per-parameter constructor.
      */
-    action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPE>& blocks, const int& charge = 0);
+    action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPE>& blocks, const int& charge = 0, const bool& strike = false);
 
     /* Ostream overload for information of action, for testing
      */

@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-action::action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPE>& blocks, const int& charge) : name(name), description(description), moves(moves), blocks(blocks), charge(charge) {}
+action::action(const std::string& name, const std::string& description, const std::vector<coordinate>& moves, const std::vector<DAMAGE_TYPE>& blocks, const int& charge, const bool& strike) : name(name), description(description), moves(moves), blocks(blocks), charge(charge), strike(strike) {}
 
 std::ostream& operator<<(std::ostream& out, const action& action) {
     out << action.name << std::endl;

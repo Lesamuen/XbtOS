@@ -5,9 +5,8 @@
 
 #include <SDL2/SDL.h>
 #include <math.h>
-#include <iostream>
 
-void renderTitleScreen(bool playSelected) {
+void renderTitleScreen(const bool& playSelected) {
     // Title is up to about 6/9 of height; play button should be 7/9 to 8/9
     // Play button 6/16 in length
     SDL_RenderClear(renderer);
@@ -243,4 +242,48 @@ void renderThreatenedTiles(const std::vector<threatenedTile>& currentThreatened)
 
     // Return to black
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void renderMovementTiles(const std::vector<coordinate>& movement, const coordinate& selected, const coordinate& enemyPosition) {
+    // Transparent green
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 50);
+
+    // Show available tiles to move to
+    for (int i = 0; i < movement.size(); i++) {
+        const coordinate& tile = movement.at(i);
+        // Not valid if on enemy
+        if (tile.x == enemyPosition.x && tile.y == enemyPosition.y) {
+            continue;
+        }
+        SDL_Rect tileBox = {SCREEN_WIDTH * (31 + 2 * tile.x) / 64, SCREEN_HEIGHT * (5 + tile.y) / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18};
+        SDL_RenderFillRect(renderer, &tileBox);
+    }
+
+    // Gold
+    SDL_SetRenderDrawColor(renderer, 255, 215, 0, 255);
+
+    // Box around selected movement tile
+    if (selected.x != 0 || selected.y != 0) {
+        SDL_Rect tileBox = {SCREEN_WIDTH * (31 + 2 * selected.x) / 64, SCREEN_HEIGHT * (5 + selected.y) / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18};
+        SDL_RenderDrawRect(renderer, &tileBox);
+    }
+
+    // Return to black
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void renderGameOverScreen(const bool& playAgainSelected) {
+    // Similar to title screen
+    // Text is up to about 6/9 of height; play button should be 7/9 to 8/9
+    // Play button 6/16 in length
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, images.at("GameOverScreen.png"), NULL, NULL);
+
+    SDL_Rect playButtonLocation = {(SCREEN_WIDTH * 5) / 16, (SCREEN_HEIGHT * 7) / 9, (SCREEN_WIDTH * 6) / 16, SCREEN_HEIGHT / 9};
+    // Decide which play button to draw
+    if (playAgainSelected) {
+        SDL_RenderCopy(renderer, images.at("PlayAgainButtonSelected.png"), NULL, &playButtonLocation);
+    } else {
+        SDL_RenderCopy(renderer, images.at("PlayAgainButton.png"), NULL, &playButtonLocation);
+    }
 }
