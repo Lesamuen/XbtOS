@@ -209,6 +209,7 @@ int main (int argc, char** argv) {
                                                 currentAction = actions.at("pass");
                                             } else if (selectedAction == -3) {
                                                 currentAction = actions.at("sidestep");
+                                                selectingMovement = true;
                                             } else if (selectedAction == -4) {
                                                 currentAction = actions.at("charge");
                                             } else if (selectedAction == -5) {
@@ -334,6 +335,20 @@ int main (int argc, char** argv) {
                 renderEnemy(enemyPosition, enemies.at(currentEnemy).getName());
                 renderThreatenedTiles(currentThreatened);
                 renderMovementTiles(currentAction.moves, selectedMovement, enemyPosition);
+
+                // Detect if hovering over a threatened tile
+                if (inBounds(mouseX, mouseY, {SCREEN_WIDTH * 21 / 64, 0, SCREEN_WIDTH * 11 / 32, SCREEN_HEIGHT * 11 / 18})) {
+                    // Get mouse pos in terms of tile coords
+                    int gridX = (mouseX - SCREEN_WIDTH * 21 / 64) / (SCREEN_WIDTH / 32) - 5;
+                    int gridY = (mouseY) / (SCREEN_HEIGHT / 18) - 5;
+                    // Test against all threatened tiles
+                    for (int i = 0; i < (int) currentThreatened.size(); i++) {
+                        if (gridX == currentThreatened.at(i).x && gridY == currentThreatened.at(i).y) {
+                            renderThreatenedHover({mouseX, mouseY}, currentThreatened.at(i).type);
+                            break;
+                        }
+                    }
+                }
             break;
 
             case SCENE::gameover:

@@ -264,6 +264,46 @@ void renderMovementTiles(const std::vector<coordinate>& movement, const coordina
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
+void renderThreatenedHover(const coordinate& mousePos, const DAMAGE_TYPE& damageType) {
+    // Consider hover text to be 1/2 height of bar buttons
+    // Offset by 10, 10 pixels for mouse cursor
+    // Color to contrast everything else
+    SDL_Color gold = {255, 215, 0, 255};
+    SDL_Texture* text;
+    switch (damageType) {
+        case DAMAGE_TYPE::physical:
+            text = renderText("Physical", gold);
+        break;
+
+        case DAMAGE_TYPE::chemical:
+            text = renderText("Chemical", gold);
+        break;
+
+        case DAMAGE_TYPE::arcane:
+            text = renderText("Arcane", gold);
+        break;
+        
+        case DAMAGE_TYPE::flame:
+            text = renderText("Flame", gold);
+        break;
+
+        case DAMAGE_TYPE::ice:
+            text = renderText("Ice", gold);
+        break;
+
+        case DAMAGE_TYPE::mind:
+            text = renderText("Mind", gold);
+        break;
+    }
+
+    int textW, textH;
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+
+    double sizeRatio = (double) (SCREEN_HEIGHT / 36) / textH;
+    SDL_Rect textLocation = {mousePos.x + 10, mousePos.y + 10, (int) (sizeRatio * textW), SCREEN_HEIGHT / 36};
+    SDL_RenderCopy(renderer, text, NULL, &textLocation);
+}
+
 void renderGameOverScreen(const bool& playAgainSelected) {
     // Similar to title screen
     // Text is up to about 6/9 of height; play button should be 7/9 to 8/9

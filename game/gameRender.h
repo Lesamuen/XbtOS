@@ -38,6 +38,8 @@ void renderThreatenedTiles(const std::vector<threatenedTile>& currentThreatened)
 
 void renderMovementTiles(const std::vector<coordinate>& movement, const coordinate& selected, const coordinate& enemyPosition);
 
+void renderThreatenedHover(const coordinate& mousePos, const DAMAGE_TYPE& damageType);
+
 void renderGameOverScreen(const bool& playAgainSelected);
 
 #endif
