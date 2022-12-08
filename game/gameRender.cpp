@@ -4,6 +4,8 @@
 #include "actions.h"
 
 #include <SDL2/SDL.h>
+#include <math.h>
+#include <iostream>
 
 void renderTitleScreen(bool playSelected) {
     // Title is up to about 6/9 of height; play button should be 7/9 to 8/9
@@ -162,5 +164,70 @@ void renderSelectedAction(const int& action) {
         SDL_SetRenderDrawColor(renderer, 255, 215, 0, 255);
         SDL_RenderDrawRect(renderer, &box);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    }
+}
+
+void renderHero() {
+    SDL_Color heroColor = {255, 215, 0, 255};
+    SDL_Texture* text = renderText("HERO", heroColor);
+    
+    int textW, textH;
+    SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+    SDL_Rect fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * 31 / 64, SCREEN_HEIGHT * 5 / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18});
+    SDL_RenderCopy(renderer, text, NULL, &fittedSize);
+}
+
+void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName) {
+    // First test if enemy even needs to be rendered; if off-grid, render an arrow pointing to it instead
+    if (enemyPosition.x < -5 || enemyPosition.x > 5 || enemyPosition.y < -5 || enemyPosition.y > 5) {
+        // Get point on border that is directly on line between enemy and hero
+        // Get sides that line is intersecting to determine what to project onto
+        double angle = std::atan2(enemyPosition.y, enemyPosition.x) * 180 / M_PI;
+
+        // pixel values of center of grid
+        coordinate heroPixel = {(SCREEN_WIDTH / 2), (SCREEN_HEIGHT * 11 / 36)};
+        // pixel values of enemy, relative to center of grid
+        coordinate enemyPixel = {(SCREEN_WIDTH * enemyPosition.x / 32), (SCREEN_HEIGHT * enemyPosition.y / 18)};
+
+        // If projecting onto horizontal line, then solve for y
+        // If projecting onto vertical line, then solve for x
+        coordinate borderPixel = {0, 0};
+        if (angle >= 45 && angle < 135) {
+            // Bottom border
+            borderPixel.y = SCREEN_HEIGHT * 11 / 36;
+            borderPixel.x = ((double) enemyPixel.x / enemyPixel.y) * borderPixel.y;
+        } else if (angle >= -135 && angle < -45) {
+            // Top border
+            borderPixel.y = -SCREEN_HEIGHT * 11 / 36;
+            borderPixel.x = ((double) enemyPixel.x / enemyPixel.y) * borderPixel.y;
+        } else if (angle >= -45 && angle < 45) {
+            // Right border
+            borderPixel.x = SCREEN_WIDTH * 11 / 64;
+            borderPixel.y = ((double) enemyPixel.y / enemyPixel.x) * borderPixel.x;
+        } else {
+            // Left border
+            borderPixel.x = -SCREEN_WIDTH * 11 / 64;
+            borderPixel.y = ((double) enemyPixel.y / enemyPixel.x) * borderPixel.x;
+        }
+
+        // Set angle in terms of rotation amount clockwise; by default, arrow sprite is pointing upwards, towards negative y or -90 degrees
+        angle += 90;
+        if (angle < 0) {
+            angle += 360;
+        }
+
+        // Arrow size is same as tile (.5/16 x .5/9); tip placed on point (-.5/16/2, 0).
+        SDL_Rect arrowLocation = {heroPixel.x + borderPixel.x - SCREEN_WIDTH / 64, heroPixel.y + borderPixel.y, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18};
+        SDL_Point arrowTip = {SCREEN_WIDTH / 64, 0};
+        SDL_RenderCopyEx(renderer, images.at("EnemyPointer.png"), NULL, &arrowLocation, angle, &arrowTip, SDL_FLIP_NONE);
+    } else {
+        // Just render enemy name on location
+        SDL_Color enemyColor = {142, 0, 0, 255};
+        SDL_Texture* text = renderText(enemyName, enemyColor);
+        
+        int textW, textH;
+        SDL_QueryTexture(text, NULL, NULL, &textW, &textH);
+        SDL_Rect fittedSize = fitRect(textW, textH, {SCREEN_WIDTH * (31 + enemyPosition.x * 2) / 64, SCREEN_HEIGHT * (5 + enemyPosition.y) / 18, SCREEN_WIDTH / 32, SCREEN_HEIGHT / 18});
+        SDL_RenderCopy(renderer, text, NULL, &fittedSize);
     }
 }

@@ -55,6 +55,7 @@ int main (int argc, char** argv) {
 
     // Keep track of current enemy
     std::string currentEnemy = "NULL";
+    coordinate enemyPosition = {0, 0};
     // Keep track of remaining "time" in ticks in enemy's turn
     int enemyTurnTracker = 0;
     // Keep track of who's turn it currently is
@@ -87,6 +88,20 @@ int main (int argc, char** argv) {
                         // Another way to exit
                         case SDLK_ESCAPE:
                             quitFlag = true;
+                        break;
+
+                        // test
+                        case SDLK_RIGHT:
+                            enemyPosition.x++;
+                        break;
+                        case SDLK_LEFT:
+                            enemyPosition.x--;
+                        break;
+                        case SDLK_UP:
+                            enemyPosition.y--;
+                        break;
+                        case SDLK_DOWN:
+                            enemyPosition.y++;
                         break;
                     }
                 break;
@@ -152,7 +167,10 @@ int main (int argc, char** argv) {
             if (currentEnemy == "NULL") {
                 // for now, just shuffle
                 heroActions.shuffle();
-                currentEnemy = "NotNULL";
+                //test
+                currentEnemy = "slime";
+                enemyPosition.x = -2;
+                enemyPosition.y = -6;
             }
 
             if (enemyTurnTracker > 0) {
@@ -182,6 +200,8 @@ int main (int argc, char** argv) {
                 renderGameScreen();
                 renderActions(heroActions);
                 renderSelectedAction(selectedAction);
+                renderHero();
+                renderEnemy(enemyPosition, enemies.at(currentEnemy).getName());
             break;
         }
 

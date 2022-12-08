@@ -162,6 +162,10 @@ public:
      *      a reference to a randomly selected move group
      */
     moveGroup& nextMoves();
+
+    const std::string& getName();
+
+    const int& getPower();
 };
 
 /* Parse an enemyMove based on enemy and hero position, and set new enemy position and get exact threatened squares.

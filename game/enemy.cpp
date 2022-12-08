@@ -53,6 +53,14 @@ moveGroup& enemy::nextMoves() {
     return moveSet[random(0, moveSet.size() - 1)];
 }
 
+const std::string& enemy::getName() {
+    return name;
+}
+
+const int& enemy::getPower() {
+    return power;
+}
+
 
 std::vector<threatenedTile> parseEnemyMove(const enemyMove& move, coordinate& enemyPosition) {
     // Always parse movement before attacks

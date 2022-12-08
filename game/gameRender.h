@@ -26,6 +26,10 @@ void renderActions(heroActions& heroActions);
 
 /* Renders a golden box around the selected action
  */
-void renderSelectedAction(const int& action);
+void renderSelectedAction(const int& action); 
+
+void renderHero();
+
+void renderEnemy(const coordinate& enemyPosition, const std::string& enemyName);
 
 #endif
