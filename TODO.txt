@@ -1,0 +1,10 @@
+Add images to each card
+Add images to hero
+Add images to enemies
+Text to show enemy move
+Enlarged version of card to right; only graphics on bottom
+Screen for choosing new cards
+Screen for selecting next battle instead of randomly choosing
+Refactor to use heap and pointers for less data duplication
+Add more enemies
+Add more cards
